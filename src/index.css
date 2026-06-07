@@ -1,0 +1,496 @@
+@import url('https://fonts.googleapis.com/css2?family=Space+Grotesk:wght@300;400;500;600;700;900&family=Inter:wght@300;400;500;600;700&display=swap');
+
+@tailwind base;
+@tailwind components;
+@tailwind utilities;
+
+/* ============================================================
+   GLOBAL BASE
+   ============================================================ */
+*, *::before, *::after {
+  box-sizing: border-box;
+  -webkit-tap-highlight-color: transparent;
+}
+
+:root {
+  --color-primary: #ffafd6;
+  --color-primary-container: #e38cb8;
+  --color-on-primary: #57173e;
+  --color-background: #131313;
+  --color-surface: #1b1b1b;
+  --color-surface-glass: rgba(53,53,53,0.5);
+  --color-outline-variant: #514349;
+  --color-on-surface-variant: #d6c1c9;
+  --color-on-surface: #e2e2e2;
+  --color-accent-green: #becc9a;
+  --nav-height: 68px;
+  --safe-bottom: env(safe-area-inset-bottom, 0px);
+}
+
+html {
+  scroll-behavior: smooth;
+  background-color: var(--color-background);
+}
+
+body {
+  margin: 0;
+  padding: 0;
+  background-color: var(--color-background);
+  color: var(--color-on-surface);
+  font-family: 'Inter', sans-serif;
+  font-size: 16px;
+  line-height: 1.6;
+  overflow-x: hidden;
+  -webkit-font-smoothing: antialiased;
+  -moz-osx-font-smoothing: grayscale;
+  overscroll-behavior: none;
+}
+
+#root {
+  min-height: 100dvh;
+  display: flex;
+  flex-direction: column;
+  position: relative;
+  overflow: hidden;
+}
+
+/* ============================================================
+   SCROLLBAR
+   ============================================================ */
+::-webkit-scrollbar {
+  width: 4px;
+}
+::-webkit-scrollbar-track {
+  background: var(--color-background);
+}
+::-webkit-scrollbar-thumb {
+  background: rgba(255,175,214,0.3);
+  border-radius: 4px;
+}
+
+/* ============================================================
+   TYPOGRAPHY
+   ============================================================ */
+h1, h2, h3, h4, h5, h6 {
+  font-family: 'Space Grotesk', sans-serif;
+  font-weight: 700;
+  color: var(--color-on-surface);
+  margin: 0;
+  line-height: 1.1;
+  letter-spacing: -0.03em;
+}
+
+p {
+  margin: 0;
+  color: var(--color-on-surface-variant);
+  line-height: 1.7;
+}
+
+/* ============================================================
+   GLASS CARD
+   ============================================================ */
+.glass-card {
+  background: var(--color-surface-glass);
+  border: 1px solid rgba(81,67,73,0.25);
+  border-radius: 16px;
+  backdrop-filter: blur(12px);
+  -webkit-backdrop-filter: blur(12px);
+  transition: transform 0.25s cubic-bezier(0.16, 1, 0.3, 1),
+              border-color 0.25s ease,
+              box-shadow 0.25s ease;
+}
+
+.glass-card:active {
+  transform: scale(0.98);
+}
+
+.glass-card-hover:hover {
+  transform: translateY(-4px);
+  border-color: rgba(255,175,214,0.3);
+  box-shadow: 0 12px 40px rgba(255,175,214,0.08);
+}
+
+/* ============================================================
+   GRAIN OVERLAY
+   ============================================================ */
+.grain-overlay {
+  position: fixed;
+  inset: 0;
+  pointer-events: none;
+  z-index: 9999;
+  opacity: 0.04;
+}
+
+/* ============================================================
+   SCROLLABLE CONTENT
+   ============================================================ */
+.screen-content {
+  flex: 1;
+  overflow-y: auto;
+  overflow-x: hidden;
+  -webkit-overflow-scrolling: touch;
+  padding-bottom: calc(var(--nav-height) + var(--safe-bottom) + 16px);
+  scroll-behavior: smooth;
+}
+
+/* ============================================================
+   BOTTOM NAV
+   ============================================================ */
+.bottom-nav {
+  position: fixed;
+  bottom: 0;
+  left: 0;
+  right: 0;
+  z-index: 50;
+  background: rgba(19,19,19,0.92);
+  backdrop-filter: blur(20px);
+  -webkit-backdrop-filter: blur(20px);
+  border-top: 1px solid rgba(81,67,73,0.2);
+  padding-bottom: var(--safe-bottom);
+  height: calc(var(--nav-height) + var(--safe-bottom));
+  transition: transform 0.3s cubic-bezier(0.16, 1, 0.3, 1);
+}
+
+.bottom-nav.hidden-nav {
+  transform: translateY(100%);
+}
+
+/* ============================================================
+   TRUST PILLS
+   ============================================================ */
+.trust-pill {
+  display: inline-flex;
+  align-items: center;
+  gap: 6px;
+  padding: 6px 14px;
+  border: 1px solid rgba(255,175,214,0.2);
+  border-radius: 9999px;
+  background: rgba(255,175,214,0.07);
+  font-size: 12px;
+  font-weight: 600;
+  text-transform: uppercase;
+  letter-spacing: 0.08em;
+  color: var(--color-primary);
+  white-space: nowrap;
+  transition: background 0.2s, border-color 0.2s;
+}
+
+.trust-pill:active {
+  background: rgba(255,175,214,0.15);
+  border-color: rgba(255,175,214,0.4);
+}
+
+/* ============================================================
+   FORM INPUTS
+   ============================================================ */
+.form-input {
+  width: 100%;
+  background: rgba(27,27,27,0.8);
+  border: 1px solid rgba(81,67,73,0.4);
+  border-radius: 12px;
+  padding: 14px 16px;
+  color: var(--color-on-surface);
+  font-family: 'Inter', sans-serif;
+  font-size: 15px;
+  outline: none;
+  transition: border-color 0.2s, box-shadow 0.2s;
+  -webkit-appearance: none;
+}
+
+.form-input:focus {
+  border-color: var(--color-primary);
+  box-shadow: 0 0 0 3px rgba(255,175,214,0.12);
+}
+
+.form-input::placeholder {
+  color: rgba(214,193,201,0.4);
+}
+
+.form-input.error {
+  border-color: #ff6b8a;
+  box-shadow: 0 0 0 3px rgba(255,107,138,0.12);
+}
+
+textarea.form-input {
+  resize: none;
+  min-height: 120px;
+}
+
+/* ============================================================
+   MARQUEE
+   ============================================================ */
+.marquee-wrapper {
+  overflow: hidden;
+  mask-image: linear-gradient(to right, transparent, black 10%, black 90%, transparent);
+  -webkit-mask-image: linear-gradient(to right, transparent, black 10%, black 90%, transparent);
+}
+
+.marquee-track {
+  display: flex;
+  width: max-content;
+  animation: marquee 20s linear infinite;
+}
+
+.marquee-track-reverse {
+  display: flex;
+  width: max-content;
+  animation: marquee-reverse 20s linear infinite;
+}
+
+.marquee-track:hover,
+.marquee-track-reverse:hover {
+  animation-play-state: paused;
+}
+
+/* ============================================================
+   NEON / GLOW EFFECTS
+   ============================================================ */
+.text-glow {
+  text-shadow: 0 0 30px rgba(255,175,214,0.5);
+}
+
+.glow-dot {
+  width: 10px;
+  height: 10px;
+  border-radius: 50%;
+  background: var(--color-primary);
+  box-shadow: 0 0 12px rgba(255,175,214,0.8), 0 0 24px rgba(255,175,214,0.4);
+  animation: pulse-glow 2s ease-in-out infinite;
+}
+
+/* ============================================================
+   ANIMATED GRADIENT BG
+   ============================================================ */
+.gradient-blob {
+  position: absolute;
+  border-radius: 50%;
+  filter: blur(80px);
+  pointer-events: none;
+}
+
+/* ============================================================
+   WHATSAPP FAB
+   ============================================================ */
+.whatsapp-fab {
+  position: fixed;
+  bottom: calc(var(--nav-height) + var(--safe-bottom) + 20px);
+  right: 20px;
+  z-index: 40;
+  width: 56px;
+  height: 56px;
+  border-radius: 50%;
+  background: #25D366;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  box-shadow: 0 4px 20px rgba(37,211,102,0.4), 0 2px 8px rgba(0,0,0,0.3);
+  transition: transform 0.2s cubic-bezier(0.16, 1, 0.3, 1), box-shadow 0.2s;
+  cursor: pointer;
+  border: none;
+}
+
+.whatsapp-fab:active {
+  transform: scale(0.92);
+  box-shadow: 0 2px 10px rgba(37,211,102,0.3);
+}
+
+/* ============================================================
+   METHODOLOGY STEP CONNECTOR
+   ============================================================ */
+.step-connector {
+  width: 2px;
+  background: linear-gradient(to bottom, var(--color-primary), transparent);
+  flex-shrink: 0;
+}
+
+/* ============================================================
+   BOTTOM SHEET
+   ============================================================ */
+.bottom-sheet-overlay {
+  position: fixed;
+  inset: 0;
+  background: rgba(0,0,0,0.7);
+  z-index: 100;
+  backdrop-filter: blur(4px);
+}
+
+.bottom-sheet {
+  position: fixed;
+  bottom: 0;
+  left: 0;
+  right: 0;
+  z-index: 101;
+  background: var(--color-surface);
+  border-radius: 24px 24px 0 0;
+  border-top: 1px solid rgba(81,67,73,0.3);
+  max-height: 88vh;
+  overflow-y: auto;
+  -webkit-overflow-scrolling: touch;
+}
+
+.bottom-sheet-handle {
+  width: 36px;
+  height: 4px;
+  border-radius: 2px;
+  background: rgba(255,175,214,0.3);
+  margin: 12px auto 0;
+}
+
+/* ============================================================
+   SUCCESS ANIMATION
+   ============================================================ */
+.success-circle {
+  width: 80px;
+  height: 80px;
+  border-radius: 50%;
+  background: rgba(190,204,154,0.15);
+  border: 2px solid var(--color-accent-green);
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  margin: 0 auto;
+}
+
+/* ============================================================
+   SECTION LABEL
+   ============================================================ */
+.section-label {
+  font-size: 11px;
+  font-weight: 700;
+  letter-spacing: 0.2em;
+  text-transform: uppercase;
+  color: var(--color-primary);
+  opacity: 0.8;
+}
+
+/* ============================================================
+   UTILITY
+   ============================================================ */
+.no-select {
+  -webkit-user-select: none;
+  user-select: none;
+}
+
+.readable {
+  max-width: 65ch;
+}
+
+.card-number {
+  font-size: 4rem;
+  font-family: 'Space Grotesk', sans-serif;
+  font-weight: 900;
+  color: rgba(255,175,214,0.12);
+  line-height: 1;
+  letter-spacing: -0.05em;
+}
+
+/* ============================================================
+   SAFE AREA PADDING
+   ============================================================ */
+.safe-top {
+  padding-top: env(safe-area-inset-top, 0px);
+}
+
+.pb-safe {
+  padding-bottom: env(safe-area-inset-bottom, 0px);
+}
+
+/* ============================================================
+   FILTER CHIPS
+   ============================================================ */
+.filter-chip {
+  display: inline-flex;
+  align-items: center;
+  padding: 6px 16px;
+  border-radius: 9999px;
+  border: 1px solid rgba(81,67,73,0.4);
+  font-size: 13px;
+  font-weight: 500;
+  color: var(--color-on-surface-variant);
+  background: transparent;
+  cursor: pointer;
+  white-space: nowrap;
+  transition: all 0.2s ease;
+}
+
+.filter-chip.active {
+  background: var(--color-primary);
+  border-color: var(--color-primary);
+  color: var(--color-on-primary);
+  font-weight: 600;
+}
+
+.filter-chip:active {
+  transform: scale(0.96);
+}
+
+/* ============================================================
+   VIDEO BACKGROUND
+   ============================================================ */
+.video-bg {
+  position: absolute;
+  inset: 0;
+  width: 100%;
+  height: 100%;
+  object-fit: cover;
+  filter: grayscale(1);
+  opacity: 0.28;
+  mix-blend-mode: screen;
+  pointer-events: none;
+}
+
+/* ============================================================
+   PAGE HERO
+   ============================================================ */
+.page-hero {
+  position: relative;
+  overflow: hidden;
+  min-height: 280px;
+  display: flex;
+  flex-direction: column;
+  justify-content: flex-end;
+  padding: 32px 24px;
+}
+
+.hero-overlay {
+  position: absolute;
+  inset: 0;
+  background: linear-gradient(
+    to bottom,
+    rgba(19,19,19,0.3) 0%,
+    rgba(19,19,19,0.7) 60%,
+    rgba(19,19,19,1) 100%
+  );
+  pointer-events: none;
+}
+
+/* ============================================================
+   SPLASH
+   ============================================================ */
+.splash-screen {
+  position: fixed;
+  inset: 0;
+  background: var(--color-background);
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  justify-content: center;
+  z-index: 9999;
+}
+
+/* ============================================================
+   KEYFRAMES (additional)
+   ============================================================ */
+@keyframes shimmer {
+  0% { background-position: -1000px 0; }
+  100% { background-position: 1000px 0; }
+}
+
+@keyframes float {
+  0%, 100% { transform: translateY(0px); }
+  50% { transform: translateY(-10px); }
+}
+
+.float-anim {
+  animation: float 4s ease-in-out infinite;
+}

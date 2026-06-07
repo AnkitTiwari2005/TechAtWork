@@ -1,0 +1,39 @@
+# Dependencies
+node_modules/
+
+# Build outputs
+dist/
+
+# Android build artifacts (keep source, exclude compiled output)
+android/app/build/
+android/.gradle/
+android/build/
+android/.idea/
+
+# IDE
+.vscode/
+.idea/
+
+# Env
+.env
+.env.local
+.env.*.local
+
+# Logs
+*.log
+npm-debug.log*
+
+# Temp clone (used to copy assets only)
+temp_clone/
+
+# OS
+.DS_Store
+Thumbs.db
+
+
+# Temp
+temp_clone/
+
+# OS
+.DS_Store
+Thumbs.db
