@@ -74,11 +74,11 @@ const SERVICES = [
     iconBg: 'rgba(190,204,154,0.10)',
     title: 'Strategic Digital Consulting',
     subtitle: 'Strategic Consulting',
-    description: 'Expert guidance for digital transformation and AI strategy.',
+    description: 'Expert guidance for digital transformation and technology adoption.',
     features: [
-      'Digital Transformation',
-      'AI Strategy & Roadmaps',
-      'Scaling Systems Architecture',
+      'Digital Strategy',
+      'Technology Audits',
+      'Growth Roadmaps',
     ],
   },
 ];
@@ -176,12 +176,12 @@ const ServicesScreen: React.FC = () => {
         <div className="mb-6">
           <span className="section-label">AI Infrastructure</span>
           <BlurText
-            text="Private AI. Your Data. Your Control."
+            text="Enterprise AI Infrastructure"
             className="text-2xl font-headline font-bold text-white mt-2"
             delay={60}
           />
           <p className="text-sm mt-2 leading-relaxed" style={{ color: 'rgba(214,193,201,0.7)' }}>
-            We deploy AI models directly on your infrastructure. No cloud dependency. Full data privacy. Enterprise-grade performance with GPU acceleration.
+            On-premise and private cloud AI deployment for enterprises that need control, compliance, and performance.
           </p>
         </div>
 

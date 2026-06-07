@@ -78,7 +78,7 @@ const BottomSheet: React.FC<BottomSheetProps> = ({ isOpen, onClose, title, subti
               backdropFilter: 'blur(24px) saturate(180%)',
               border: '0.5px solid rgba(255,175,214,0.15)',
               borderBottom: 'none',
-              maxHeight: '88vh',
+              maxHeight: '85vh',
               overflow: 'hidden',
               display: 'flex',
               flexDirection: 'column',
@@ -178,8 +178,8 @@ const BottomSheet: React.FC<BottomSheetProps> = ({ isOpen, onClose, title, subti
 
             {/* Content area — outer sheet already has maxHeight: 88vh */}
             <div
-              className="px-6 pb-10 flex-1"
-              style={{ overflowY: 'auto', WebkitOverflowScrolling: 'touch' } as React.CSSProperties}
+              className="px-6 flex-1"
+              style={{ overflowY: 'auto', WebkitOverflowScrolling: 'touch', paddingBottom: 'calc(68px + env(safe-area-inset-bottom, 0px) + 24px)' } as React.CSSProperties}
               onTouchMove={(e) => e.stopPropagation()}
             >
               {children}

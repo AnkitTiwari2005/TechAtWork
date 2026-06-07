@@ -62,10 +62,10 @@ const CASE_STUDIES = [
 ];
 
 const METHODOLOGY = [
-  { icon: <SearchIcon size={22} color="#ffafd6" />, step: '01', color: '#ffafd6', title: 'Discovery', description: 'Deep-dive into your business model, market position, and technical infrastructure to identify high-leverage opportunities.' },
-  { icon: <TargetIcon size={22} color="#becc9a" />, step: '02', color: '#becc9a', title: 'Strategy', description: 'Data-driven roadmap aligned to your commercial goals. Every decision is tied to measurable business outcomes.' },
-  { icon: <LightningIcon size={22} color="#e38cb8" />, step: '03', color: '#e38cb8', title: 'Execution', description: 'Rapid, iterative build cycles with continuous deployment. From prototype to production in weeks, not months.' },
-  { icon: <RocketIcon size={22} color="#ffafd6" />, step: '04', color: '#ffafd6', title: 'Scale', description: 'Ongoing optimisation, monitoring, and strategic expansion to ensure sustained growth and maximum ROI.' },
+  { icon: <SearchIcon size={22} color="#ffafd6" />, step: '01', color: '#ffafd6', title: 'Discovery', description: 'Understanding goals and bottlenecks in your current operations.' },
+  { icon: <TargetIcon size={22} color="#becc9a" />, step: '02', color: '#becc9a', title: 'Strategy', description: 'Designing AI + digital infrastructure tailored to your needs.' },
+  { icon: <LightningIcon size={22} color="#e38cb8" />, step: '03', color: '#e38cb8', title: 'Execution', description: 'Development, deployment, and optimization.' },
+  { icon: <RocketIcon size={22} color="#ffafd6" />, step: '04', color: '#ffafd6', title: 'Scale', description: 'Analytics, growth systems, and ongoing optimization.' },
 ];
 
 const STATS = [
@@ -132,7 +132,7 @@ const HomeScreen: React.FC = () => {
           </motion.div>
 
           <BlurText
-            text="We Engineer Precision AI Systems That Scale"
+            text="AI-Powered Digital Solutions for Modern Businesses"
             className="text-4xl font-headline font-black text-white"
             delay={75}
             as="h1"
@@ -149,7 +149,7 @@ const HomeScreen: React.FC = () => {
 
           <motion.p style={{ fontSize: '14px', lineHeight: 1.65, color: 'rgba(214,193,201,0.7)', marginTop: '12px', maxWidth: '320px' }}
             initial={{ opacity: 0 }} animate={{ opacity: 1 }} transition={{ delay: 0.7 }}>
-            From AI automation to enterprise web platforms — precision-built digital solutions that give your business a measurable edge.
+            From AI-integrated websites to market intelligence and growth automation — Tech@Work helps businesses scale with intelligent digital infrastructure.
           </motion.p>
 
           {/* CTA Buttons */}

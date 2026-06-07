@@ -64,6 +64,7 @@ function AppContent() {
     const setStatusBar = async () => {
       try {
         const { StatusBar, Style } = await import('@capacitor/status-bar');
+        await StatusBar.setOverlaysWebView({ overlay: false });
         await StatusBar.setStyle({ style: Style.Dark });
         await StatusBar.setBackgroundColor({ color: '#131313' });
       } catch { /* web environment */ }
