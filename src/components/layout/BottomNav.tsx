@@ -1,67 +1,124 @@
 import React from 'react';
 import { NavLink, useLocation } from 'react-router-dom';
 import { motion } from 'framer-motion';
-import { useAppStore } from '../../store/useAppStore';
+import { HomeIcon, LightningIcon, BriefcaseIcon, UserIcon, MailIcon } from '../ui/Icon';
+
+const hapticLight = async () => {
+  try {
+    const { Haptics, ImpactStyle } = await import('@capacitor/haptics');
+    await Haptics.impact({ style: ImpactStyle.Light });
+  } catch { }
+};
 
 const NAV_ITEMS = [
-  { path: '/home', label: 'Home', icon: '⌂', id: 'nav-home' },
-  { path: '/services', label: 'Services', icon: '⚡', id: 'nav-services' },
-  { path: '/cases', label: 'Cases', icon: '◈', id: 'nav-cases' },
-  { path: '/about', label: 'About', icon: '◎', id: 'nav-about' },
-  { path: '/contact', label: 'Contact', icon: '✉', id: 'nav-contact' },
+  { to: '/home', label: 'Home', Icon: HomeIcon },
+  { to: '/services', label: 'Services', Icon: LightningIcon },
+  { to: '/cases', label: 'Cases', Icon: BriefcaseIcon },
+  { to: '/about', label: 'About', Icon: UserIcon },
+  { to: '/contact', label: 'Contact', Icon: MailIcon },
 ];
 
 const BottomNav: React.FC = () => {
-  const { isKeyboardOpen } = useAppStore();
   const location = useLocation();
-
-  if (isKeyboardOpen) return null;
 
   return (
     <nav
-      className={`bottom-nav ${isKeyboardOpen ? 'hidden-nav' : ''}`}
-      role="navigation"
-      aria-label="Main navigation"
+      style={{
+        position: 'fixed',
+        bottom: 0,
+        left: 0,
+        right: 0,
+        zIndex: 50,
+        height: '72px',
+        background: 'rgba(13,13,13,0.92)',
+        backdropFilter: 'blur(24px) saturate(180%)',
+        borderTop: '0.5px solid rgba(255,175,214,0.12)',
+        display: 'flex',
+        alignItems: 'center',
+        justifyContent: 'space-around',
+        paddingBottom: 'env(safe-area-inset-bottom)',
+        paddingLeft: '8px',
+        paddingRight: '8px',
+      }}
     >
-      <div className="flex items-center justify-around h-[68px] px-2">
-        {NAV_ITEMS.map((item) => {
-          const isActive = location.pathname === item.path;
-          return (
-            <NavLink
-              key={item.path}
-              to={item.path}
-              id={item.id}
-              className="flex flex-col items-center justify-center gap-1 flex-1 h-full no-select relative"
-              aria-label={item.label}
+      {NAV_ITEMS.map(({ to, label, Icon }) => {
+        const isActive = location.pathname === to || (to === '/home' && location.pathname === '/');
+        return (
+          <NavLink
+            key={to}
+            to={to}
+            onClick={hapticLight}
+            style={{ textDecoration: 'none', flex: 1 }}
+          >
+            <motion.div
+              whileTap={{ scale: 0.88 }}
+              transition={{ type: 'spring', stiffness: 500, damping: 35 }}
+              style={{
+                display: 'flex',
+                flexDirection: 'column',
+                alignItems: 'center',
+                justifyContent: 'center',
+                gap: '4px',
+                paddingTop: '6px',
+                paddingBottom: '4px',
+                position: 'relative',
+              }}
             >
+              {/* Active indicator pill — above icon */}
               {isActive && (
                 <motion.div
-                  layoutId="nav-indicator"
-                  className="absolute top-0 left-1/2 -translate-x-1/2 h-0.5 w-8 rounded-b-full"
-                  style={{ background: '#ffafd6' }}
-                  transition={{ type: 'spring', stiffness: 500, damping: 30 }}
+                  layoutId="dock-indicator"
+                  style={{
+                    position: 'absolute',
+                    top: 0,
+                    width: '32px',
+                    height: '3px',
+                    borderRadius: '0 0 3px 3px',
+                    background: '#ffafd6',
+                    boxShadow: '0 0 8px rgba(255,175,214,0.6)',
+                  }}
+                  transition={{ type: 'spring', stiffness: 500, damping: 35 }}
                 />
               )}
-              <motion.span
+
+              {/* Icon container */}
+              <motion.div
                 animate={{
-                  color: isActive ? '#ffafd6' : 'rgba(214,193,201,0.5)',
-                  scale: isActive ? 1.15 : 1,
+                  backgroundColor: isActive ? 'rgba(255,175,214,0.1)' : 'transparent',
+                  scale: isActive ? 1 : 0.9,
                 }}
-                transition={{ duration: 0.2 }}
-                style={{ fontSize: '20px', lineHeight: 1, display: 'block' }}
+                transition={{ type: 'spring', stiffness: 400, damping: 30 }}
+                style={{
+                  width: '40px',
+                  height: '40px',
+                  borderRadius: '12px',
+                  display: 'flex',
+                  alignItems: 'center',
+                  justifyContent: 'center',
+                }}
               >
-                {item.icon}
-              </motion.span>
+                <Icon
+                  size={22}
+                  color={isActive ? '#ffafd6' : 'rgba(214,193,201,0.4)'}
+                  strokeWidth={isActive ? 2 : 1.5}
+                />
+              </motion.div>
+
+              {/* Label */}
               <span
-                className="text-[10px] font-semibold"
-                style={{ color: isActive ? '#ffafd6' : 'rgba(214,193,201,0.45)' }}
+                style={{
+                  fontSize: '10px',
+                  fontWeight: 600,
+                  color: isActive ? '#ffafd6' : 'rgba(214,193,201,0.4)',
+                  letterSpacing: '0.02em',
+                }}
               >
-                {item.label}
+                {label}
               </span>
-            </NavLink>
-          );
-        })}
-      </div>
+            </motion.div>
+          </NavLink>
+        );
+      })}
     </nav>
   );
 };

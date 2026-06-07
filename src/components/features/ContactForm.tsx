@@ -139,7 +139,14 @@ const ContactForm: React.FC<ContactFormProps> = ({ onSuccess, compact = false })
               animate={{ scale: 1 }}
               transition={{ type: 'spring', stiffness: 400, damping: 20 }}
             >
-              <span style={{ fontSize: '2.5rem' }}>✓</span>
+              <svg width="32" height="32" viewBox="0 0 24 24" fill="none" stroke="#25D366" strokeWidth="2.5" strokeLinecap="round" strokeLinejoin="round">
+                <motion.path
+                  d="M20 6L9 17l-5-5"
+                  initial={{ pathLength: 0 }}
+                  animate={{ pathLength: 1 }}
+                  transition={{ duration: 0.6, ease: 'easeOut' }}
+                />
+              </svg>
             </motion.div>
             <h3 className="text-xl font-headline font-bold text-white mb-2">Message Sent!</h3>
             <p className="text-sm text-center" style={{ color: 'rgba(214,193,201,0.7)' }}>
@@ -232,7 +239,17 @@ const ContactForm: React.FC<ContactFormProps> = ({ onSuccess, compact = false })
             }}
             whileTap={{ scale: 0.97 }}
           >
-            {isLoading && submitMode === 'email' ? 'Sending...' : '✉ Send via Email'}
+            {isLoading && submitMode === 'email' ? (
+              'Sending...'
+            ) : (
+              <>
+                <svg width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="1.5" strokeLinecap="round" strokeLinejoin="round">
+                  <path d="M4 4h16c1.1 0 2 .9 2 2v12c0 1.1-.9 2-2 2H4c-1.1 0-2-.9-2-2V6c0-1.1.9-2 2-2z" />
+                  <polyline points="22,6 12,13 2,6" />
+                </svg>
+                Send via Email
+              </>
+            )}
           </motion.button>
         </div>
       </div>

@@ -3,38 +3,63 @@ import React from 'react';
 interface InfiniteMarqueeProps {
   items: string[];
   direction?: 'forward' | 'reverse';
-  className?: string;
-  itemClassName?: string;
-  speed?: string;
+  speed?: number;
 }
 
 const InfiniteMarquee: React.FC<InfiniteMarqueeProps> = ({
   items,
   direction = 'forward',
-  className = '',
-  itemClassName = '',
-  speed = '20s',
+  speed = 30,
 }) => {
-  // Duplicate items for seamless loop
   const doubled = [...items, ...items];
 
   return (
-    <div className={`marquee-wrapper py-2 ${className}`}>
+    <div
+      className="overflow-hidden"
+      style={{
+        maskImage: 'linear-gradient(90deg, transparent 0%, rgba(19,19,19,1) 8%, rgba(19,19,19,1) 92%, transparent 100%)',
+        WebkitMaskImage: 'linear-gradient(90deg, transparent 0%, rgba(19,19,19,1) 8%, rgba(19,19,19,1) 92%, transparent 100%)',
+      }}
+    >
       <div
-        className={direction === 'forward' ? 'marquee-track' : 'marquee-track-reverse'}
-        style={{ animationDuration: speed }}
+        className="flex gap-2 w-max"
+        style={{
+          animation: `marquee-${direction} ${speed}s linear infinite`,
+        }}
+        onMouseEnter={(e) => { (e.currentTarget as HTMLElement).style.animationPlayState = 'paused'; }}
+        onMouseLeave={(e) => { (e.currentTarget as HTMLElement).style.animationPlayState = 'running'; }}
       >
         {doubled.map((item, i) => (
-          <span
-            key={i}
-            className={`inline-flex items-center gap-2 px-6 text-sm font-semibold uppercase tracking-widest ${itemClassName}`}
-          >
+          <React.Fragment key={i}>
             <span
-              className="w-1.5 h-1.5 rounded-full flex-shrink-0"
-              style={{ background: i % 3 === 0 ? '#ffafd6' : i % 3 === 1 ? '#becc9a' : '#e38cb8' }}
-            />
-            {item}
-          </span>
+              style={{
+                display: 'inline-flex',
+                alignItems: 'center',
+                padding: '6px 18px',
+                borderRadius: '99px',
+                border: '0.5px solid rgba(255,175,214,0.15)',
+                background: 'rgba(255,175,214,0.04)',
+                fontSize: '12px',
+                fontWeight: 600,
+                color: 'rgba(214,193,201,0.7)',
+                whiteSpace: 'nowrap',
+              }}
+            >
+              {item}
+            </span>
+            {i < doubled.length - 1 && (
+              <span
+                style={{
+                  width: '4px',
+                  height: '4px',
+                  borderRadius: '50%',
+                  background: 'rgba(255,175,214,0.3)',
+                  alignSelf: 'center',
+                  flexShrink: 0,
+                }}
+              />
+            )}
+          </React.Fragment>
         ))}
       </div>
     </div>

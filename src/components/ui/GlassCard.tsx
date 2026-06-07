@@ -1,29 +1,52 @@
 import React from 'react';
-import { motion, HTMLMotionProps } from 'framer-motion';
+import { motion } from 'framer-motion';
 
-interface GlassCardProps extends HTMLMotionProps<'div'> {
+interface GlassCardProps {
   children: React.ReactNode;
   className?: string;
-  hoverable?: boolean;
   onClick?: () => void;
+  variant?: 'default' | 'elevated' | 'flush';
+  animate?: boolean;
+  style?: React.CSSProperties;
 }
 
 const GlassCard: React.FC<GlassCardProps> = ({
   children,
   className = '',
-  hoverable = false,
   onClick,
-  ...props
+  variant = 'default',
+  animate = true,
+  style,
 }) => {
+  const baseStyle: React.CSSProperties = {
+    background: variant === 'elevated' ? 'rgba(28,28,28,0.85)' : 'rgba(28,28,28,0.7)',
+    backdropFilter: `blur(${variant === 'elevated' ? 24 : 20}px) saturate(${variant === 'elevated' ? 160 : 150}%)`,
+    border: `0.5px solid rgba(255,175,214,${variant === 'elevated' ? 0.18 : 0.1})`,
+    borderRadius: variant === 'flush' ? '20px 20px 0 0' : '20px',
+    boxShadow: variant === 'elevated'
+      ? 'inset 0 1px 0 rgba(255,255,255,0.08), 0 16px 48px rgba(0,0,0,0.5), 0 0 0 1px rgba(255,175,214,0.08)'
+      : 'inset 0 1px 0 rgba(255,255,255,0.06), 0 8px 32px rgba(0,0,0,0.4)',
+    ...style,
+  };
+
+  if (onClick || animate) {
+    return (
+      <motion.div
+        style={baseStyle}
+        className={className}
+        onClick={onClick}
+        whileTap={onClick ? { scale: 0.98 } : undefined}
+        transition={{ type: 'spring', stiffness: 400, damping: 30 }}
+      >
+        {children}
+      </motion.div>
+    );
+  }
+
   return (
-    <motion.div
-      className={`glass-card ${hoverable ? 'glass-card-hover cursor-pointer' : ''} ${className}`}
-      whileTap={onClick ? { scale: 0.98 } : undefined}
-      onClick={onClick}
-      {...props}
-    >
+    <div style={baseStyle} className={className}>
       {children}
-    </motion.div>
+    </div>
   );
 };
 

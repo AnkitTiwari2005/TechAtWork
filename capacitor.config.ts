@@ -19,6 +19,15 @@ const config: CapacitorConfig = {
       style: 'Dark',
       backgroundColor: '#131313',
     },
+    Keyboard: {
+      resize: 'body' as any,
+      style: 'dark' as any,
+    },
+  },
+  android: {
+    allowMixedContent: true,
+    captureInput: true,
+    overScrollMode: 'never',
   },
 };
 

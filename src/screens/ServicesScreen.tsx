@@ -5,10 +5,24 @@ import VideoBackground from '../components/features/VideoBackground';
 import GlassCard from '../components/ui/GlassCard';
 import BlurText from '../components/ui/BlurText';
 import WhatsAppFAB from '../components/features/WhatsAppFAB';
+import {
+  GlobeIcon,
+  BrainIcon,
+  ChartIcon,
+  MegaphoneIcon,
+  TargetIcon,
+  BuildingIcon,
+  LockIcon,
+  CpuIcon,
+} from '../components/ui/Icon';
+import {
+  staggerContainerVariants,
+  staggerItemVariants,
+} from '../hooks/useScrollReveal';
 
 const SERVICES = [
   {
-    icon: '🌐',
+    icon: <GlobeIcon size={22} color="#ffafd6" />,
     iconBg: 'rgba(255,175,214,0.12)',
     title: 'Build Scalable Web Platforms',
     subtitle: 'Web Development',
@@ -20,7 +34,7 @@ const SERVICES = [
     ],
   },
   {
-    icon: '🤖',
+    icon: <BrainIcon size={22} color="#becc9a" />,
     iconBg: 'rgba(190,204,154,0.12)',
     title: 'Automate with AI Agents',
     subtitle: 'AI Automation',
@@ -32,7 +46,7 @@ const SERVICES = [
     ],
   },
   {
-    icon: '📊',
+    icon: <ChartIcon size={22} color="#e38cb8" />,
     iconBg: 'rgba(227,140,184,0.12)',
     title: 'Predict Market Trends Faster',
     subtitle: 'Market Intelligence',
@@ -44,7 +58,7 @@ const SERVICES = [
     ],
   },
   {
-    icon: '📣',
+    icon: <MegaphoneIcon size={22} color="#ffafd6" />,
     iconBg: 'rgba(255,175,214,0.10)',
     title: 'Growth Through AI Marketing',
     subtitle: 'Performance Marketing',
@@ -56,7 +70,7 @@ const SERVICES = [
     ],
   },
   {
-    icon: '🎯',
+    icon: <TargetIcon size={22} color="#becc9a" />,
     iconBg: 'rgba(190,204,154,0.10)',
     title: 'Strategic Digital Consulting',
     subtitle: 'Strategic Consulting',
@@ -70,10 +84,26 @@ const SERVICES = [
 ];
 
 const AI_FEATURES = [
-  { icon: '🏢', title: 'On-Prem AI', desc: 'Models running on your servers.' },
-  { icon: '🔒', title: 'Private Inference', desc: 'Zero data leaves your network.' },
-  { icon: '⚡', title: 'GPU Acceleration', desc: 'CUDA & TensorRT optimized.' },
-  { icon: '🧠', title: 'Local LLMs', desc: 'Ollama, vLLM, custom models.' },
+  {
+    icon: <BuildingIcon size={22} color="#ffafd6" />,
+    title: 'On-Prem AI',
+    desc: 'Models running on your servers.',
+  },
+  {
+    icon: <LockIcon size={22} color="#becc9a" />,
+    title: 'Private Inference',
+    desc: 'Zero data leaves your network.',
+  },
+  {
+    icon: <CpuIcon size={22} color="#e38cb8" />,
+    title: 'GPU Acceleration',
+    desc: 'CUDA & TensorRT optimized.',
+  },
+  {
+    icon: <BrainIcon size={22} color="#becc9a" />,
+    title: 'Local LLMs',
+    desc: 'Ollama, vLLM, custom models.',
+  },
 ];
 
 const openWhatsApp = async () => {
@@ -91,8 +121,17 @@ const ServicesScreen: React.FC = () => {
       <div className="page-hero" style={{ minHeight: '220px' }}>
         <VideoBackground src="/assets/gears-video.mp4" opacity={0.22} />
         <div className="hero-overlay" />
+        {/* Additional radial gradient overlay: transparent center → semi-dark edges */}
+        <div
+          style={{
+            position: 'absolute',
+            inset: 0,
+            background: 'radial-gradient(ellipse at center, rgba(19,19,19,0) 30%, rgba(19,19,19,0.4) 100%)',
+            pointerEvents: 'none',
+          }}
+        />
         <div className="relative z-10">
-          <span className="section-label">⚡ Our Services</span>
+          <span className="section-label">Our Services</span>
           <BlurText
             text="Capabilities & Infrastructure"
             className="text-4xl font-headline font-black text-white mt-2"
@@ -105,24 +144,31 @@ const ServicesScreen: React.FC = () => {
         </div>
       </div>
 
-      {/* SERVICES LIST */}
+      {/* SERVICES LIST — stagger animation */}
       <section className="px-5 py-8">
-        <div className="flex flex-col gap-4">
+        <motion.div
+          className="flex flex-col gap-4"
+          variants={staggerContainerVariants}
+          initial="hidden"
+          whileInView="visible"
+          viewport={{ once: true, margin: '-30px' }}
+        >
           {SERVICES.map((service, i) => (
-            <ServiceCard
-              key={service.title}
-              {...service}
-              index={i}
-              onCta={openWhatsApp}
-            />
+            <motion.div key={service.title} variants={staggerItemVariants}>
+              <ServiceCard
+                {...service}
+                index={i}
+                onCta={openWhatsApp}
+              />
+            </motion.div>
           ))}
-        </div>
+        </motion.div>
       </section>
 
       {/* AI INFRASTRUCTURE */}
       <section className="px-5 py-8">
         <div className="mb-6">
-          <span className="section-label">🔐 AI Infrastructure</span>
+          <span className="section-label">AI Infrastructure</span>
           <BlurText
             text="Private AI. Your Data. Your Control."
             className="text-2xl font-headline font-bold text-white mt-2"
@@ -143,7 +189,7 @@ const ServicesScreen: React.FC = () => {
               transition={{ duration: 0.4, delay: i * 0.08 }}
             >
               <GlassCard className="p-4 h-full">
-                <div className="text-2xl mb-2">{feat.icon}</div>
+                <div className="mb-2">{feat.icon}</div>
                 <h4 className="text-sm font-headline font-bold text-white mb-1">{feat.title}</h4>
                 <p className="text-xs leading-relaxed" style={{ color: 'rgba(214,193,201,0.65)' }}>{feat.desc}</p>
               </GlassCard>
@@ -157,7 +203,7 @@ const ServicesScreen: React.FC = () => {
         <motion.button
           id="services-book-cta"
           onClick={openWhatsApp}
-          className="w-full py-4 rounded-2xl font-bold text-sm"
+          className="w-full py-4 rounded-2xl font-bold text-sm btn-glow"
           style={{ background: 'linear-gradient(135deg, #ffafd6, #e38cb8)', color: '#57173e' }}
           whileTap={{ scale: 0.97 }}
         >

@@ -3,6 +3,7 @@ import { motion } from 'framer-motion';
 import BlurText from '../components/ui/BlurText';
 import GlassCard from '../components/ui/GlassCard';
 import ContactForm from '../components/features/ContactForm';
+import { MailIcon, PhoneIcon, ClockIcon } from '../components/ui/Icon';
 
 const ContactScreen: React.FC = () => {
   const openPhone = async () => {
@@ -41,7 +42,7 @@ const ContactScreen: React.FC = () => {
           animate={{ opacity: 1, y: 0 }}
           transition={{ duration: 0.6 }}
         >
-          <span className="section-label">✉ Contact</span>
+          <span className="section-label">Contact</span>
           <BlurText
             text="Let's Talk Business"
             className="text-4xl font-headline font-black text-white mt-3 mb-3"
@@ -85,7 +86,7 @@ const ContactScreen: React.FC = () => {
             animate={{ opacity: 1, y: 0 }}
             transition={{ delay: 0.4 }}
           >
-            <span style={{ fontSize: '22px' }}>✉</span>
+            <MailIcon size={22} color="#ffafd6" />
             <span className="text-xs font-semibold" style={{ color: '#ffafd6' }}>Email</span>
           </motion.button>
 
@@ -99,7 +100,7 @@ const ContactScreen: React.FC = () => {
             animate={{ opacity: 1, y: 0 }}
             transition={{ delay: 0.5 }}
           >
-            <span style={{ fontSize: '22px' }}>📞</span>
+            <PhoneIcon size={22} color="#becc9a" />
             <span className="text-xs font-semibold" style={{ color: '#becc9a' }}>Call</span>
           </motion.button>
         </div>
@@ -110,21 +111,27 @@ const ContactScreen: React.FC = () => {
         <GlassCard className="p-4">
           <div className="flex flex-col gap-3">
             <div className="flex items-center gap-3">
-              <div className="w-8 h-8 rounded-lg flex items-center justify-center text-sm" style={{ background: 'rgba(37,211,102,0.15)' }}>📱</div>
+              <div className="w-8 h-8 rounded-lg flex items-center justify-center" style={{ background: 'rgba(37,211,102,0.15)' }}>
+                <PhoneIcon size={16} color="#25D366" />
+              </div>
               <div>
                 <div className="text-xs font-semibold uppercase tracking-wider mb-0.5" style={{ color: 'rgba(214,193,201,0.5)' }}>Phone / WhatsApp</div>
                 <div className="text-sm font-semibold text-white">+91 98117 97407</div>
               </div>
             </div>
             <div className="flex items-center gap-3">
-              <div className="w-8 h-8 rounded-lg flex items-center justify-center text-sm" style={{ background: 'rgba(255,175,214,0.15)' }}>✉</div>
+              <div className="w-8 h-8 rounded-lg flex items-center justify-center" style={{ background: 'rgba(255,175,214,0.15)' }}>
+                <MailIcon size={16} color="#ffafd6" />
+              </div>
               <div>
                 <div className="text-xs font-semibold uppercase tracking-wider mb-0.5" style={{ color: 'rgba(214,193,201,0.5)' }}>Email</div>
                 <div className="text-sm font-semibold text-white">shivskukreja@gmail.com</div>
               </div>
             </div>
             <div className="flex items-center gap-3">
-              <div className="w-8 h-8 rounded-lg flex items-center justify-center text-sm" style={{ background: 'rgba(190,204,154,0.15)' }}>⏱</div>
+              <div className="w-8 h-8 rounded-lg flex items-center justify-center" style={{ background: 'rgba(190,204,154,0.15)' }}>
+                <ClockIcon size={16} color="#becc9a" />
+              </div>
               <div>
                 <div className="text-xs font-semibold uppercase tracking-wider mb-0.5" style={{ color: 'rgba(214,193,201,0.5)' }}>Response Time</div>
                 <div className="text-sm font-semibold text-white">Within 24 hours</div>

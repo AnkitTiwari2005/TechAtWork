@@ -5,6 +5,7 @@ import CaseStudyCard from '../components/features/CaseStudyCard';
 import BottomSheet from '../components/ui/BottomSheet';
 import BlurText from '../components/ui/BlurText';
 import GlassCard from '../components/ui/GlassCard';
+import { XIcon } from '../components/ui/Icon';
 
 const ALL_CASES = [
   {
@@ -54,6 +55,12 @@ const ALL_CASES = [
 
 const FILTER_CHIPS = ['All', 'AI Automation', 'Web Dev', 'Performance'];
 
+/** Extract a numeric percentage from a stat value string, or null if not applicable */
+function parsePercent(value: string): number | null {
+  const match = value.match(/^(\d+)%$/);
+  return match ? parseInt(match[1], 10) : null;
+}
+
 const CaseStudiesScreen: React.FC = () => {
   const [activeFilter, setActiveFilter] = useState('All');
   const [selectedCase, setSelectedCase] = useState<typeof ALL_CASES[0] | null>(null);
@@ -85,7 +92,7 @@ const CaseStudiesScreen: React.FC = () => {
     <div style={{ background: '#131313', minHeight: '100vh' }}>
       {/* HEADER */}
       <div className="px-6 pt-8 pb-6">
-        <span className="section-label">💼 Portfolio</span>
+        <span className="section-label">Portfolio</span>
         <BlurText
           text="Engineering Impact"
           className="text-4xl font-headline font-black text-white mt-2 mb-2"
@@ -150,6 +157,27 @@ const CaseStudiesScreen: React.FC = () => {
       >
         {selectedCase && (
           <div>
+            {/* X close button */}
+            <div className="flex justify-end mb-3">
+              <button
+                id={`sheet-close-${selectedCase.company.toLowerCase()}`}
+                onClick={() => setSelectedCase(null)}
+                style={{
+                  background: 'rgba(255,175,214,0.08)',
+                  border: '0.5px solid rgba(255,175,214,0.2)',
+                  borderRadius: '50%',
+                  width: '32px',
+                  height: '32px',
+                  display: 'flex',
+                  alignItems: 'center',
+                  justifyContent: 'center',
+                  cursor: 'pointer',
+                }}
+              >
+                <XIcon size={14} color="rgba(214,193,201,0.7)" />
+              </button>
+            </div>
+
             <img
               src={selectedCase.image}
               alt={selectedCase.company}
@@ -176,17 +204,42 @@ const CaseStudiesScreen: React.FC = () => {
               {selectedCase.description}
             </p>
 
-            {/* Stats */}
-            <div className="flex gap-3 mb-6">
+            {/* Stats with gradient text + animated progress bars for % values */}
+            <div className="flex gap-3 mb-4">
               {selectedCase.stats.map(stat => (
                 <div key={stat.label} className="flex-1 py-3 rounded-xl text-center"
                   style={{ background: 'rgba(255,175,214,0.08)' }}>
-                  <div className="text-xl font-headline font-black" style={{ color: '#ffafd6' }}>{stat.value}</div>
+                  <div className="text-xl font-headline font-black text-gradient">{stat.value}</div>
                   <div className="text-[10px] font-semibold uppercase tracking-wider mt-0.5"
                     style={{ color: 'rgba(214,193,201,0.6)' }}>{stat.label}</div>
                 </div>
               ))}
             </div>
+
+            {/* Animated progress meter bars for % stats */}
+            {selectedCase.stats.some(s => parsePercent(s.value) !== null) && (
+              <div className="flex flex-col gap-3 mb-5">
+                {selectedCase.stats.filter(s => parsePercent(s.value) !== null).map(stat => {
+                  const pct = parsePercent(stat.value)!;
+                  return (
+                    <div key={stat.label}>
+                      <div className="flex justify-between items-center mb-1">
+                        <span className="text-xs font-semibold" style={{ color: 'rgba(214,193,201,0.7)' }}>{stat.label}</span>
+                        <span className="text-xs font-bold" style={{ color: '#ffafd6' }}>{stat.value}</span>
+                      </div>
+                      <div style={{ height: '4px', background: 'rgba(255,175,214,0.1)', borderRadius: '99px', overflow: 'hidden' }}>
+                        <motion.div
+                          style={{ height: '100%', borderRadius: '99px', background: 'linear-gradient(90deg, #ffafd6, #e38cb8)' }}
+                          initial={{ width: '0%' }}
+                          animate={{ width: `${pct}%` }}
+                          transition={{ duration: 1, ease: 'easeOut', delay: 0.2 }}
+                        />
+                      </div>
+                    </div>
+                  );
+                })}
+              </div>
+            )}
 
             {/* Tech Stack */}
             <div className="mb-5">

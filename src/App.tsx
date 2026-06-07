@@ -1,5 +1,5 @@
-import { useEffect } from 'react';
-import { BrowserRouter, Routes, Route, Navigate } from 'react-router-dom';
+import { useEffect, useCallback } from 'react';
+import { BrowserRouter, Routes, Route, Navigate, useNavigate, useLocation } from 'react-router-dom';
 import { AnimatePresence, motion } from 'framer-motion';
 import AppShell from './components/layout/AppShell';
 import SplashScreen from './screens/SplashScreen';
@@ -8,20 +8,53 @@ import ServicesScreen from './screens/ServicesScreen';
 import CaseStudiesScreen from './screens/CaseStudiesScreen';
 import AboutScreen from './screens/AboutScreen';
 import ContactScreen from './screens/ContactScreen';
+import ErrorBoundary from './components/ui/ErrorBoundary';
 import { useAppStore } from './store/useAppStore';
 
+// Premium page transition — scale + opacity instead of basic slide
 const pageVariants = {
-  initial: { opacity: 0, x: 20 },
-  animate: { opacity: 1, x: 0 },
-  exit: { opacity: 0, x: -20 },
+  initial: { opacity: 0, scale: 1.02 },
+  animate: {
+    opacity: 1,
+    scale: 1,
+    transition: { type: 'spring' as const, stiffness: 200, damping: 25, duration: 0.35 },
+  },
+  exit: {
+    opacity: 0,
+    scale: 0.96,
+    transition: { duration: 0.2, ease: 'easeIn' as const },
+  },
 };
 
-const pageTransition = {
-  duration: 0.25,
-  ease: 'easeOut' as const,
-};
+// Global back button handler (only fires if no sheet is open)
+function BackButtonHandler() {
+  const navigate = useNavigate();
+  const location = useLocation();
+  const { isSheetOpen } = useAppStore();
 
-function App() {
+  const handleBack = useCallback(() => {
+    if (isSheetOpen) return; // sheets handle their own back button
+    if (location.pathname !== '/home' && location.pathname !== '/') {
+      navigate(-1);
+    }
+  }, [navigate, location, isSheetOpen]);
+
+  useEffect(() => {
+    let handler: any;
+    const register = async () => {
+      try {
+        const { App } = await import('@capacitor/app');
+        handler = await App.addListener('backButton', handleBack);
+      } catch { /* web environment */ }
+    };
+    register();
+    return () => { if (handler) handler.remove(); };
+  }, [handleBack]);
+
+  return null;
+}
+
+function AppContent() {
   const { loadLeads } = useAppStore();
 
   useEffect(() => {
@@ -40,7 +73,8 @@ function App() {
   }, [loadLeads]);
 
   return (
-    <BrowserRouter>
+    <>
+      <BackButtonHandler />
       <Routes>
         {/* Splash */}
         <Route
@@ -51,7 +85,6 @@ function App() {
               animate="animate"
               exit="exit"
               variants={pageVariants}
-              transition={pageTransition}
             >
               <SplashScreen />
             </motion.div>
@@ -70,9 +103,10 @@ function App() {
                   animate="animate"
                   exit="exit"
                   variants={pageVariants}
-                  transition={pageTransition}
                 >
-                  <HomeScreen />
+                  <ErrorBoundary>
+                    <HomeScreen />
+                  </ErrorBoundary>
                 </motion.div>
               </AnimatePresence>
             }
@@ -87,9 +121,10 @@ function App() {
                   animate="animate"
                   exit="exit"
                   variants={pageVariants}
-                  transition={pageTransition}
                 >
-                  <ServicesScreen />
+                  <ErrorBoundary>
+                    <ServicesScreen />
+                  </ErrorBoundary>
                 </motion.div>
               </AnimatePresence>
             }
@@ -104,9 +139,10 @@ function App() {
                   animate="animate"
                   exit="exit"
                   variants={pageVariants}
-                  transition={pageTransition}
                 >
-                  <CaseStudiesScreen />
+                  <ErrorBoundary>
+                    <CaseStudiesScreen />
+                  </ErrorBoundary>
                 </motion.div>
               </AnimatePresence>
             }
@@ -121,9 +157,10 @@ function App() {
                   animate="animate"
                   exit="exit"
                   variants={pageVariants}
-                  transition={pageTransition}
                 >
-                  <AboutScreen />
+                  <ErrorBoundary>
+                    <AboutScreen />
+                  </ErrorBoundary>
                 </motion.div>
               </AnimatePresence>
             }
@@ -138,9 +175,10 @@ function App() {
                   animate="animate"
                   exit="exit"
                   variants={pageVariants}
-                  transition={pageTransition}
                 >
-                  <ContactScreen />
+                  <ErrorBoundary>
+                    <ContactScreen />
+                  </ErrorBoundary>
                 </motion.div>
               </AnimatePresence>
             }
@@ -150,7 +188,17 @@ function App() {
         {/* Catch all */}
         <Route path="*" element={<Navigate to="/" replace />} />
       </Routes>
-    </BrowserRouter>
+    </>
+  );
+}
+
+function App() {
+  return (
+    <ErrorBoundary>
+      <BrowserRouter>
+        <AppContent />
+      </BrowserRouter>
+    </ErrorBoundary>
   );
 }
 
