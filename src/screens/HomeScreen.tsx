@@ -26,10 +26,10 @@ const STATS = [
 ];
 
 const METHODOLOGY_STEPS = [
-  { number: '01', title: 'Discovery', description: 'We dive deep into your business model, goals, and technical landscape to uncover what truly matters.', icon: '🔍', color: '#ffafd6' },
-  { number: '02', title: 'Strategy', description: 'Data-backed roadmaps tailored to your market position, with clear KPIs and milestones.', icon: '🎯', color: '#becc9a' },
-  { number: '03', title: 'Execution', description: 'Rapid deployment with AI-augmented workflows, keeping you in the loop at every stage.', icon: '⚡', color: '#e38cb8' },
-  { number: '04', title: 'Scale', description: 'Continuous optimization, analytics dashboards, and growth architecture as you expand.', icon: '📈', color: '#d6c1c9' },
+  { number: '01', title: 'Discovery', description: 'Understanding goals and bottlenecks in your current operations.', icon: '🔍', color: '#ffafd6' },
+  { number: '02', title: 'Strategy', description: 'Designing AI + digital infrastructure tailored to your needs.', icon: '🎯', color: '#becc9a' },
+  { number: '03', title: 'Execution', description: 'Development, deployment, and optimization.', icon: '⚡', color: '#e38cb8' },
+  { number: '04', title: 'Scale', description: 'Analytics, growth systems, and ongoing optimization.', icon: '📈', color: '#d6c1c9' },
 ];
 
 const MARQUEE_ROW1 = ['Technology', 'Healthcare', 'Financial Services', 'Energy & Utilities', 'Consumer & Retail', 'Manufacturing'];
@@ -41,33 +41,33 @@ const CASE_STUDIES = [
     company: 'Houserve',
     category: 'AI Automation',
     tagColor: '#ffafd6',
-    description: 'AI-powered real estate photo editing with background removal, generative fill, and object removal at scale.',
-    stats: [{ value: '85%', label: 'Less Editing Time' }, { value: '1000s', label: 'Daily Images' }],
+    description: 'Advanced platform featuring robust background removal, generative fill capabilities, and precise object removal tools tailored for high-end real estate and architectural visualization.',
+    stats: [{ value: '85%', label: 'Less Editing Time' }, { value: '~0', label: 'Downtime' }],
     tags: ['AI/ML', 'SaaS', 'Real Estate'],
-    challenge: 'Houserve needed to dramatically reduce the time estate agents spent manually editing property photos. The existing manual workflow was costing hours per day.',
-    impact: '85% reduction in editing time. The platform now processes thousands of images daily with AI-powered background removal, generative fill, and object removal — entirely automated.',
+    challenge: 'Real estate agencies faced high costs and slow turnaround times for property photo editing. We architected a scalable SaaS infrastructure leveraging custom ML models.',
+    impact: 'The resulting platform reduced editing time by 85% and significantly lowered operational costs for our clients, processing thousands of images daily with near-zero downtime.',
   },
   {
     image: '/assets/shuddham.png',
     company: 'Shuddham',
     category: 'Web Dev',
     tagColor: '#becc9a',
-    description: 'Full-stack AI SaaS platform built on Next.js & MongoDB with Stripe credit billing and secure auth.',
+    description: 'A comprehensive AI SaaS platform built on a robust Next.js and TypeScript stack. Features advanced AI Image Processing capabilities and seamless Stripe integration for credit management.',
     stats: [{ value: 'Concurrent', label: 'Processing' }, { value: 'High', label: 'Margin Revenue' }],
     tags: ['Next.js', 'MongoDB', 'Stripe', 'Auth'],
-    challenge: 'Building a robust AI image processing platform that could handle concurrent users while maintaining a profitable credit-based billing model.',
-    impact: 'Scaled to concurrent processing with a stable, high-margin revenue stream. Full Stripe integration for credit management, secure auth, and real-time processing.',
+    challenge: 'The client needed a robust, production-ready system to monetize AI image processing tools. We engineered a full-stack Next.js application, integrating secure authentication and Stripe-based credit billing.',
+    impact: 'The platform successfully scaled to handle concurrent processing requests efficiently, establishing a stable, high-margin revenue stream.',
   },
   {
     image: '/assets/onemint.png',
     company: 'OneMint',
     category: 'Performance',
     tagColor: '#e38cb8',
-    description: 'Digital intelligence platform serving 500,000+ readers — headless architecture migration with caching optimization.',
-    stats: [{ value: '60%', label: 'Faster Load' }, { value: '45%', label: 'More Organic Traffic' }],
+    description: 'A premier digital intelligence platform delivering wealth building guides and cutting-edge technology insights. Engineered for scale, serving 500,000+ readers.',
+    stats: [{ value: '60%', label: 'Faster Load' }, { value: '45%', label: 'Organic Traffic ↑' }],
     tags: ['Headless CMS', 'Performance', 'SEO'],
-    challenge: 'OneMint was serving 500,000+ readers on a legacy monolithic architecture. Page load speeds were suffering, leading to high bounce rates and declining SEO rankings.',
-    impact: '60% improvement in page load speeds and 45% increase in organic search traffic after migrating to a headless architecture with advanced caching optimization.',
+    challenge: 'As traffic surged, the legacy monolithic architecture struggled with load times and SEO optimization, resulting in high bounce rates and stagnant user growth. The publishing workflow was also bottlenecked by an outdated CMS.',
+    impact: 'We decoupled the frontend using a modern headless architecture and optimized caching strategies. This resulted in a 60% improvement in page load speeds, a 45% increase in organic search traffic, and a highly streamlined content pipeline.',
   },
 ];
 
@@ -120,7 +120,7 @@ const HomeScreen: React.FC = () => {
 
           {/* Headline */}
           <BlurText
-            text="Transform Your Business with AI"
+            text="AI-Powered Digital Solutions for Modern Businesses"
             className="text-4xl font-headline font-black text-white mb-5 leading-tight"
             delay={80}
             as="h1"
@@ -134,7 +134,7 @@ const HomeScreen: React.FC = () => {
             animate={{ opacity: 1 }}
             transition={{ delay: 0.8 }}
           >
-            We build AI-driven systems that automate workflows, generate insights, and accelerate growth — deployed in under 2 weeks.
+            From AI-integrated websites to market intelligence and growth automation, Tech@Work helps businesses scale with intelligent digital infrastructure.
           </motion.p>
 
           {/* CTAs */}
@@ -284,9 +284,9 @@ const HomeScreen: React.FC = () => {
           <div className="gradient-blob" style={{ width: '200px', height: '200px', background: 'rgba(255,175,214,0.12)', top: '-50px', left: '50%', transform: 'translateX(-50%)' }} />
           <div className="relative z-10">
             <div className="text-4xl mb-3">🚀</div>
-            <h2 className="text-2xl font-headline font-black text-white mb-2">Ready to Transform?</h2>
+            <h2 className="text-2xl font-headline font-black text-white mb-2">Ready to Build Something Intelligent?</h2>
             <p className="text-sm mb-6" style={{ color: 'rgba(214,193,201,0.7)' }}>
-              Let's discuss your project. We respond within 24 hours.
+              Tell us about your business challenges. We'll craft a strategy tailored to your goals — from AI automation to full-scale digital transformation.
             </p>
             <button
               id="home-book-consult"

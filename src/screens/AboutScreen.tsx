@@ -9,19 +9,19 @@ const CORE_VALUES = [
   {
     icon: '💼',
     title: 'Business-First',
-    description: 'Every technical decision serves a business outcome. We speak ROI, not jargon.',
+    description: 'Every decision, line of code, and architectural choice is tied directly to commercial outcomes and business growth.',
     color: '#ffafd6',
   },
   {
     icon: '📊',
     title: 'Data-Driven',
-    description: 'Decisions backed by real data. We measure, analyze, and optimize continuously.',
+    description: 'We let numbers guide strategy, not assumptions. Rigorous analytics form the foundation of our execution.',
     color: '#becc9a',
   },
   {
     icon: '🤖',
     title: 'AI-Powered',
-    description: 'We embed AI at the core of every solution, not as an afterthought.',
+    description: 'We integrate cutting-edge artificial intelligence into every solution, ensuring you stay ahead of the technology curve.',
     color: '#e38cb8',
   },
 ];
@@ -29,7 +29,7 @@ const CORE_VALUES = [
 const EXPERTISE = ['AI Engineering', 'Data Science', 'Web Architecture', 'Performance Marketing', 'Business Strategy', 'LLM Deployment', 'Cloud Infrastructure', 'Product Design'];
 
 const openWhatsApp = async () => {
-  const url = `https://api.whatsapp.com/send/?phone=919811797407&text=${encodeURIComponent('Hi Tech@Work! I\'d like to book a consultation call.')}&type=phone_number&app_absent=0`;
+  const url = `https://api.whatsapp.com/send/?phone=919811797407&text=${encodeURIComponent('Hi Tech@Work! I\'d like to book a free consultancy call.')}&type=phone_number&app_absent=0`;
   try {
     const { Browser } = await import('@capacitor/browser');
     await Browser.open({ url });
@@ -50,13 +50,13 @@ const AboutScreen: React.FC = () => {
           >
             <span className="section-label">◎ About Us</span>
             <BlurText
-              text="We Build What AI Enables"
+              text="Precision-Engineered Digital Solutions"
               className="text-4xl font-headline font-black text-white mt-3 mb-4"
               delay={80}
               as="h1"
             />
             <p className="text-sm leading-relaxed readable" style={{ color: 'rgba(214,193,201,0.8)' }}>
-              Tech@Work is a B2B technology consultancy specializing in AI-driven digital transformation. We partner with businesses to build intelligent systems that work — from local LLM deployment to full-scale SaaS platforms.
+              We are Tech@Work — a technology consultancy built for businesses that want to move faster, think smarter, and scale with intention.
             </p>
           </motion.div>
         </div>
@@ -71,7 +71,8 @@ const AboutScreen: React.FC = () => {
         <div className="grid grid-cols-2 gap-3">
           <StatCounter target={95} suffix="%" label="Client Retention" icon="❤️" color="#e38cb8" />
           <GlassCard className="p-4 flex flex-col gap-2">
-            <div className="w-10 h-10 rounded-xl flex items-center justify-center text-xl" style={{ background: 'rgba(190,204,154,0.15)', border: '1px solid rgba(190,204,154,0.3)' }}>⏱</div>
+            <div className="w-10 h-10 rounded-xl flex items-center justify-center text-xl"
+              style={{ background: 'rgba(190,204,154,0.15)', border: '1px solid rgba(190,204,154,0.3)' }}>⏱</div>
             <div className="text-3xl font-headline font-black" style={{ color: '#becc9a', lineHeight: 1 }}>&lt;2wk</div>
             <div className="text-xs font-semibold uppercase tracking-widest" style={{ color: 'rgba(214,193,201,0.6)' }}>Avg. Deployment</div>
           </GlassCard>
@@ -84,8 +85,14 @@ const AboutScreen: React.FC = () => {
           <div className="gradient-blob" style={{ width: '150px', height: '150px', background: 'rgba(255,175,214,0.1)', bottom: '-30px', right: '-30px' }} />
           <div className="relative z-10">
             <span className="section-label">🎯 Our Mission</span>
-            <p className="text-base font-medium leading-relaxed mt-3" style={{ color: '#e2e2e2' }}>
-              "To democratize enterprise-grade AI — giving businesses of every size the tools, strategy, and execution they need to compete in the intelligence economy."
+            <h2 className="text-lg font-headline font-bold text-white mt-3 mb-3">
+              We build intelligent systems that drive measurable outcomes.
+            </h2>
+            <p className="text-sm leading-relaxed mb-3" style={{ color: 'rgba(214,193,201,0.75)' }}>
+              In a landscape flooded with generic tools and theoretical advice, we focus on execution. Our mission is to bridge the gap between complex technology and tangible business growth.
+            </p>
+            <p className="text-sm leading-relaxed" style={{ color: 'rgba(214,193,201,0.75)' }}>
+              Whether it's deploying private AI models that protect your data, building enterprise-grade platforms, or engineering data-driven marketing campaigns, every solution we deliver is designed with precision and purpose.
             </p>
           </div>
         </GlassCard>
@@ -94,9 +101,9 @@ const AboutScreen: React.FC = () => {
       {/* CORE VALUES */}
       <section className="px-6 py-8">
         <div className="mb-6">
-          <span className="section-label">✨ Core Values</span>
+          <span className="section-label">✨ Our DNA</span>
           <BlurText
-            text="How We Operate"
+            text="Core Values"
             className="text-2xl font-headline font-bold text-white mt-2"
             delay={60}
           />
@@ -137,16 +144,15 @@ const AboutScreen: React.FC = () => {
         <InfiniteMarquee items={[...EXPERTISE].reverse()} direction="reverse" />
       </section>
 
-      {/* TEAM PLACEHOLDER */}
+      {/* TEAM */}
       <section className="px-6 py-8">
         <div className="mb-4">
           <span className="section-label">👥 Our Team</span>
           <h2 className="text-2xl font-headline font-bold text-white mt-2">The People Behind The Work</h2>
         </div>
-        <GlassCard className="p-6 text-center">
-          <div className="text-4xl mb-3">🚀</div>
-          <p className="text-sm" style={{ color: 'rgba(214,193,201,0.7)' }}>
-            A lean, elite team of AI engineers, product designers, and growth strategists — all senior-level, all remote-first.
+        <GlassCard className="p-6">
+          <p className="text-sm leading-relaxed" style={{ color: 'rgba(214,193,201,0.75)' }}>
+            Our team combines deep technical expertise in artificial intelligence, web engineering, and data science with strategic business acumen to deliver solutions that actually work.
           </p>
         </GlassCard>
       </section>
@@ -156,18 +162,18 @@ const AboutScreen: React.FC = () => {
         <GlassCard className="p-6 text-center relative overflow-hidden">
           <div className="gradient-blob" style={{ width: '200px', height: '200px', background: 'rgba(255,175,214,0.1)', top: '-50px', left: '50%', transform: 'translateX(-50%)' }} />
           <div className="relative z-10">
-            <h3 className="text-xl font-headline font-bold text-white mb-2">Ready to Work Together?</h3>
+            <h3 className="text-xl font-headline font-bold text-white mb-2">Ready to Transform Your Business?</h3>
             <p className="text-sm mb-5" style={{ color: 'rgba(214,193,201,0.7)' }}>
-              Book a free 30-minute strategy call. No pressure, just value.
+              Book a free strategy call to discuss your business challenges and explore how our intelligent digital solutions can drive your growth.
             </p>
             <motion.button
               id="about-book-call"
               onClick={openWhatsApp}
-              className="w-full py-4 rounded-2xl font-bold text-sm"
+              className="w-full py-4 rounded-2xl font-bold text-sm mb-3"
               style={{ background: 'linear-gradient(135deg, #ffafd6, #e38cb8)', color: '#57173e' }}
               whileTap={{ scale: 0.97 }}
             >
-              Book a Call →
+              Book Free Consultancy Call →
             </motion.button>
           </div>
         </GlassCard>

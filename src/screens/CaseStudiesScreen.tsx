@@ -12,36 +12,43 @@ const ALL_CASES = [
     company: 'Houserve',
     category: 'AI Automation',
     tagColor: '#ffafd6',
-    description: 'AI-powered real estate photo editing platform with background removal, generative fill, and object removal at scale.',
-    stats: [{ value: '85%', label: 'Less Editing Time' }, { value: '1000s', label: 'Daily Images' }],
-    tags: ['AI/ML', 'SaaS', 'Real Estate', 'Computer Vision'],
-    challenge: 'Houserve needed to dramatically reduce the time estate agents spent manually editing property photos. The existing manual workflow was costing hours per day and creating a bottleneck that prevented agents from scaling their listings business.',
-    impact: '85% reduction in editing time. The platform now processes thousands of images daily with AI-powered background removal, generative fill, and object removal — entirely automated and available 24/7.',
+    description: 'Advanced platform featuring robust background removal, generative fill capabilities, and precise object removal tools tailored for high-end real estate and architectural visualization.',
+    stats: [{ value: '85%', label: 'Less Editing Time' }, { value: '~0', label: 'Downtime' }],
+    tags: ['AI/ML', 'SaaS Infrastructure', 'Real Estate', 'Computer Vision'],
+    challenge: 'Real estate agencies faced high costs and slow turnaround times for property photo editing. We architected a scalable SaaS infrastructure leveraging custom ML models to handle the processing demands at scale.',
+    impact: 'The resulting platform reduced editing time by 85% and significantly lowered operational costs for our clients, processing thousands of images daily with near-zero downtime.',
     type: 'AI Automation',
+    url: 'https://houserve.in',
+    techStack: ['Custom ML Models', 'SaaS Infrastructure', 'Background Removal AI', 'Generative Fill'],
   },
   {
     image: '/assets/shuddham.png',
     company: 'Shuddham',
     category: 'Web Dev',
     tagColor: '#becc9a',
-    description: 'Full-stack AI SaaS platform built on Next.js & MongoDB with Stripe credit billing and enterprise-grade security.',
-    stats: [{ value: 'Concurrent', label: 'Processing' }, { value: 'High', label: 'Margin Revenue' }],
-    tags: ['Next.js', 'MongoDB', 'Stripe', 'Auth.js', 'SaaS'],
-    challenge: 'Building a robust AI image processing platform that could handle concurrent users while maintaining a profitable credit-based billing model. The client needed a complete go-to-market product in minimal time.',
-    impact: 'Scaled to support concurrent AI processing with a stable, high-margin revenue stream. Full Stripe integration for credit management, secure authentication, and real-time processing pipelines.',
+    description: 'A comprehensive AI SaaS platform built on a robust Next.js and TypeScript stack. Features advanced AI Image Processing capabilities and seamless Stripe integration for credit management.',
+    stats: [{ value: 'Concurrent', label: 'Processing Scale' }, { value: 'High', label: 'Margin Revenue' }],
+    tags: ['Next.js', 'TypeScript', 'MongoDB', 'Stripe', 'Auth'],
+    challenge: 'The client needed a robust, production-ready system to monetize AI image processing tools. We engineered a full-stack Next.js application, integrating secure authentication and Stripe-based credit billing.',
+    impact: 'The platform successfully scaled to handle concurrent processing requests efficiently, establishing a stable, high-margin revenue stream.',
     type: 'Web Dev',
+    url: 'https://shuddham.in',
+    techStack: ['Next.js', 'TypeScript', 'MongoDB', 'Stripe', 'Secure Auth'],
   },
   {
     image: '/assets/onemint.png',
     company: 'OneMint',
     category: 'Performance',
     tagColor: '#e38cb8',
-    description: 'Digital intelligence platform for 500,000+ readers — headless architecture migration with advanced caching optimization.',
-    stats: [{ value: '60%', label: 'Faster Load Speed' }, { value: '45%', label: 'Organic Traffic' }],
-    tags: ['Headless CMS', 'Performance', 'SEO', 'CDN', 'Architecture'],
-    challenge: 'OneMint was serving over 500,000 monthly readers on a legacy monolithic CMS. Page load speeds were degrading user experience and causing significant SEO penalties and revenue loss.',
-    impact: '60% improvement in page load speeds and 45% increase in organic search traffic after migrating to a headless architecture with advanced edge caching and CDN optimization.',
+    description: 'A premier digital intelligence platform delivering wealth building guides and cutting-edge technology insights. Engineered for scale, currently serving a high-engagement audience of over 500,000+ readers.',
+    stats: [{ value: '60%', label: 'Faster Page Load' }, { value: '45%', label: 'Organic Traffic ↑' }],
+    tags: ['Headless Architecture', 'SEO', 'Performance', 'CDN', 'Content Platform'],
+    challenge: 'As traffic surged, the legacy monolithic architecture struggled with load times and SEO optimization, resulting in high bounce rates and stagnant user growth. The publishing workflow was also bottlenecked by an outdated CMS.',
+    impact: 'We decoupled the frontend using a modern headless architecture and optimized caching strategies. This resulted in a 60% improvement in page load speeds, a 45% increase in organic search traffic, and a highly streamlined content pipeline that accelerated publishing cadence.',
     type: 'Performance',
+    url: 'https://onemint.in',
+    techStack: ['Headless CMS', 'CDN Optimization', 'SEO Architecture', 'Caching Strategies'],
+    extraStat: '500,000+ readers served',
   },
 ];
 
@@ -67,19 +74,29 @@ const CaseStudiesScreen: React.FC = () => {
     } catch { /* share not available */ }
   };
 
+  const openUrl = async (url: string) => {
+    try {
+      const { Browser } = await import('@capacitor/browser');
+      await Browser.open({ url });
+    } catch { window.open(url, '_blank'); }
+  };
+
   return (
     <div style={{ background: '#131313', minHeight: '100vh' }}>
       {/* HEADER */}
       <div className="px-6 pt-8 pb-6">
         <span className="section-label">💼 Portfolio</span>
         <BlurText
-          text="Our Work"
+          text="Engineering Impact"
           className="text-4xl font-headline font-black text-white mt-2 mb-2"
           delay={80}
           as="h1"
         />
-        <p className="text-sm leading-relaxed mb-6" style={{ color: 'rgba(214,193,201,0.7)' }}>
-          Real projects. Measurable outcomes. From AI automation to full-stack platforms.
+        <p className="text-sm leading-relaxed mb-2" style={{ color: 'rgba(214,193,201,0.7)' }}>
+          A curated selection of our highest-performance digital infrastructure projects. Precision-engineered solutions for modern enterprises.
+        </p>
+        <p className="text-xs mb-5" style={{ color: 'rgba(214,193,201,0.45)' }}>
+          © 2026 Tech@Work. Precision Engineering for the Digital Age.
         </p>
         <FilterChips
           chips={FILTER_CHIPS}
@@ -142,39 +159,71 @@ const CaseStudiesScreen: React.FC = () => {
 
             {/* Category + Tags */}
             <div className="flex flex-wrap gap-1.5 mb-5">
-              <span className="text-xs font-bold uppercase tracking-wider px-2.5 py-1 rounded-full" style={{ background: selectedCase.tagColor, color: '#131313' }}>
+              <span className="text-xs font-bold uppercase tracking-wider px-2.5 py-1 rounded-full"
+                style={{ background: selectedCase.tagColor, color: '#131313' }}>
                 {selectedCase.category}
               </span>
               {selectedCase.tags.map(tag => (
-                <span key={tag} className="text-xs font-medium px-2.5 py-1 rounded-full" style={{ background: 'rgba(81,67,73,0.4)', color: 'rgba(214,193,201,0.8)' }}>
+                <span key={tag} className="text-xs font-medium px-2.5 py-1 rounded-full"
+                  style={{ background: 'rgba(81,67,73,0.4)', color: 'rgba(214,193,201,0.8)' }}>
                   {tag}
                 </span>
               ))}
             </div>
 
+            {/* Description */}
+            <p className="text-sm leading-relaxed mb-5" style={{ color: 'rgba(214,193,201,0.85)' }}>
+              {selectedCase.description}
+            </p>
+
             {/* Stats */}
             <div className="flex gap-3 mb-6">
               {selectedCase.stats.map(stat => (
-                <div key={stat.label} className="flex-1 py-3 rounded-xl text-center" style={{ background: 'rgba(255,175,214,0.08)' }}>
+                <div key={stat.label} className="flex-1 py-3 rounded-xl text-center"
+                  style={{ background: 'rgba(255,175,214,0.08)' }}>
                   <div className="text-xl font-headline font-black" style={{ color: '#ffafd6' }}>{stat.value}</div>
-                  <div className="text-[10px] font-semibold uppercase tracking-wider mt-0.5" style={{ color: 'rgba(214,193,201,0.6)' }}>{stat.label}</div>
+                  <div className="text-[10px] font-semibold uppercase tracking-wider mt-0.5"
+                    style={{ color: 'rgba(214,193,201,0.6)' }}>{stat.label}</div>
                 </div>
               ))}
             </div>
 
+            {/* Tech Stack */}
+            <div className="mb-5">
+              <h4 className="text-xs font-bold uppercase tracking-wider mb-2" style={{ color: 'rgba(214,193,201,0.5)' }}>
+                Tech Stack
+              </h4>
+              <div className="flex flex-wrap gap-1.5">
+                {selectedCase.techStack.map(tech => (
+                  <span key={tech} className="text-xs font-medium px-2 py-1 rounded-lg"
+                    style={{ background: 'rgba(190,204,154,0.12)', color: '#becc9a', border: '1px solid rgba(190,204,154,0.2)' }}>
+                    {tech}
+                  </span>
+                ))}
+              </div>
+            </div>
+
             {/* Challenge */}
             <div className="mb-5">
-              <h4 className="text-sm font-bold uppercase tracking-wider mb-2" style={{ color: '#ffafd6' }}>The Challenge</h4>
-              <p className="text-sm leading-relaxed" style={{ color: 'rgba(214,193,201,0.8)' }}>{selectedCase.challenge}</p>
+              <h4 className="text-sm font-bold uppercase tracking-wider mb-2" style={{ color: '#ffafd6' }}>
+                The Challenge
+              </h4>
+              <p className="text-sm leading-relaxed" style={{ color: 'rgba(214,193,201,0.8)' }}>
+                {selectedCase.challenge}
+              </p>
             </div>
 
             {/* Impact */}
             <div className="mb-6">
-              <h4 className="text-sm font-bold uppercase tracking-wider mb-2" style={{ color: '#becc9a' }}>The Impact</h4>
-              <p className="text-sm leading-relaxed" style={{ color: 'rgba(214,193,201,0.8)' }}>{selectedCase.impact}</p>
+              <h4 className="text-sm font-bold uppercase tracking-wider mb-2" style={{ color: '#becc9a' }}>
+                The Impact
+              </h4>
+              <p className="text-sm leading-relaxed" style={{ color: 'rgba(214,193,201,0.8)' }}>
+                {selectedCase.impact}
+              </p>
             </div>
 
-            {/* Share */}
+            {/* Actions */}
             <div className="flex gap-3">
               <button
                 id={`sheet-share-${selectedCase.company.toLowerCase()}`}
@@ -182,7 +231,15 @@ const CaseStudiesScreen: React.FC = () => {
                 className="flex-1 py-3 rounded-xl font-semibold text-sm"
                 style={{ background: 'rgba(255,175,214,0.1)', color: '#ffafd6', border: '1px solid rgba(255,175,214,0.25)' }}
               >
-                Share Case Study
+                Share
+              </button>
+              <button
+                id={`sheet-visit-${selectedCase.company.toLowerCase()}`}
+                onClick={() => openUrl(selectedCase.url)}
+                className="flex-1 py-3 rounded-xl font-semibold text-sm"
+                style={{ background: 'rgba(190,204,154,0.1)', color: '#becc9a', border: '1px solid rgba(190,204,154,0.25)' }}
+              >
+                Visit Site ↗
               </button>
               <button
                 id={`sheet-discuss-${selectedCase.company.toLowerCase()}`}
@@ -197,7 +254,7 @@ const CaseStudiesScreen: React.FC = () => {
                 className="flex-1 py-3 rounded-xl font-bold text-sm"
                 style={{ background: 'linear-gradient(135deg, #ffafd6, #e38cb8)', color: '#57173e' }}
               >
-                Build Similar →
+                Build Similar
               </button>
             </div>
           </div>
