@@ -9,7 +9,7 @@ import VideoBackground from '../components/features/VideoBackground';
 import WhatsAppFAB from '../components/features/WhatsAppFAB';
 import MethodologyStep from '../components/features/MethodologyStep';
 import CaseStudyCard from '../components/features/CaseStudyCard';
-import { BrainIcon, GlobeIcon, ChartIcon, MegaphoneIcon, TargetIcon, RocketIcon, BuildingIcon, HeartIcon, SparkleIcon } from '../components/ui/Icon';
+import { BrainIcon, GlobeIcon, ChartIcon, MegaphoneIcon, TargetIcon, RocketIcon, BuildingIcon, HeartIcon, SparkleIcon, SearchIcon, LightningIcon } from '../components/ui/Icon';
 import { staggerContainerVariants, staggerItemVariants } from '../hooks/useScrollReveal';
 
 const CASE_STUDIES = [
@@ -49,10 +49,10 @@ const CASE_STUDIES = [
 ];
 
 const METHODOLOGY = [
-  { icon: '🔍', step: '01', color: '#ffafd6', title: 'Discovery', description: 'Deep-dive into your business model, market position, and technical infrastructure to identify high-leverage opportunities.' },
-  { icon: '🎯', step: '02', color: '#becc9a', title: 'Strategy', description: 'Data-driven roadmap aligned to your commercial goals. Every decision is tied to measurable business outcomes.' },
-  { icon: '⚡', step: '03', color: '#e38cb8', title: 'Execution', description: 'Rapid, iterative build cycles with continuous deployment. From prototype to production in weeks, not months.' },
-  { icon: '📈', step: '04', color: '#ffafd6', title: 'Scale', description: 'Ongoing optimisation, monitoring, and strategic expansion to ensure sustained growth and maximum ROI.' },
+  { icon: <SearchIcon size={22} color="#ffafd6" />, step: '01', color: '#ffafd6', title: 'Discovery', description: 'Deep-dive into your business model, market position, and technical infrastructure to identify high-leverage opportunities.' },
+  { icon: <TargetIcon size={22} color="#becc9a" />, step: '02', color: '#becc9a', title: 'Strategy', description: 'Data-driven roadmap aligned to your commercial goals. Every decision is tied to measurable business outcomes.' },
+  { icon: <LightningIcon size={22} color="#e38cb8" />, step: '03', color: '#e38cb8', title: 'Execution', description: 'Rapid, iterative build cycles with continuous deployment. From prototype to production in weeks, not months.' },
+  { icon: <RocketIcon size={22} color="#ffafd6" />, step: '04', color: '#ffafd6', title: 'Scale', description: 'Ongoing optimisation, monitoring, and strategic expansion to ensure sustained growth and maximum ROI.' },
 ];
 
 const PARTICLES = Array.from({ length: 12 }, (_, i) => ({
@@ -199,7 +199,8 @@ const HomeScreen: React.FC = () => {
             <StatCounter target={95} suffix="%" label="Client Retention" icon={<HeartIcon size={18} />} color="#e38cb8" />
           </motion.div>
           <motion.div variants={staggerItemVariants}>
-            <GlassCard className="p-4 flex flex-col gap-2">
+            <GlassCard className="p-4 flex flex-col gap-2" style={{ position: 'relative', overflow: 'hidden' }}>
+              <div style={{ position: 'absolute', top: 0, left: 0, right: 0, height: '2px', background: '#becc9a', borderRadius: '20px 20px 0 0', opacity: 0.6 }} />
               <div className="w-10 h-10 rounded-xl flex items-center justify-center" style={{ background: 'rgba(190,204,154,0.15)', border: '1px solid rgba(190,204,154,0.3)' }}>
                 <span style={{ fontSize: '20px', color: '#becc9a', display: 'flex' }}>
                   <svg width="18" height="18" viewBox="0 0 24 24" fill="none" stroke="#becc9a" strokeWidth="1.5" strokeLinecap="round" strokeLinejoin="round">
@@ -290,15 +291,17 @@ const HomeScreen: React.FC = () => {
             <p className="text-sm mb-6" style={{ color: 'rgba(214,193,201,0.7)' }}>
               Tell us about your business challenges. We'll craft a strategy tailored to your goals — from AI automation to full-scale digital transformation.
             </p>
-            <motion.button
-              id="home-book-consult"
-              onClick={openWhatsApp}
-              className="w-full py-4 rounded-2xl font-bold text-sm btn-glow"
-              style={{ background: 'linear-gradient(135deg, #ffafd6, #e38cb8)', color: '#57173e' }}
-              whileTap={{ scale: 0.97 }}
-            >
-              Book Free Consultancy Call
-            </motion.button>
+            <div style={{ borderRadius: '16px', padding: '1px', background: 'linear-gradient(135deg, rgba(255,175,214,0.6), rgba(227,140,184,0.3))', display: 'block', width: '100%' }}>
+              <motion.button
+                id="home-book-consult"
+                onClick={openWhatsApp}
+                className="w-full py-4 rounded-[14px] font-bold text-sm btn-primary-glow"
+                style={{ background: 'linear-gradient(135deg, #ffafd6, #e38cb8)', color: '#57173e', borderRadius: '14px' }}
+                whileTap={{ scale: 0.97 }}
+              >
+                Book Free Consultancy Call
+              </motion.button>
+            </div>
             <p className="text-xs mt-3" style={{ color: 'rgba(214,193,201,0.4)' }}>No commitment. 30-minute call.</p>
           </div>
         </GlassCard>
@@ -311,6 +314,7 @@ const HomeScreen: React.FC = () => {
         isOpen={!!selectedCase}
         onClose={() => setSelectedCase(null)}
         title={selectedCase?.company}
+        subtitle={selectedCase?.category}
       >
         {selectedCase && (
           <div className="flex flex-col gap-5">

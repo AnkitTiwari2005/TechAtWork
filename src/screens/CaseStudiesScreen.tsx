@@ -154,6 +154,7 @@ const CaseStudiesScreen: React.FC = () => {
         isOpen={!!selectedCase}
         onClose={() => setSelectedCase(null)}
         title={selectedCase?.company}
+        subtitle={selectedCase?.category}
       >
         {selectedCase && (
           <div>
@@ -209,7 +210,7 @@ const CaseStudiesScreen: React.FC = () => {
               {selectedCase.stats.map(stat => (
                 <div key={stat.label} className="flex-1 py-3 rounded-xl text-center"
                   style={{ background: 'rgba(255,175,214,0.08)' }}>
-                  <div className="text-xl font-headline font-black text-gradient">{stat.value}</div>
+                  <div className="text-xl font-headline font-black text-gradient-static stat-highlight">{stat.value}</div>
                   <div className="text-[10px] font-semibold uppercase tracking-wider mt-0.5"
                     style={{ color: 'rgba(214,193,201,0.6)' }}>{stat.label}</div>
                 </div>

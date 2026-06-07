@@ -108,13 +108,15 @@ const ServiceCard: React.FC<ServiceCardProps> = ({
                   className="w-full h-px mb-4"
                   style={{ background: 'linear-gradient(90deg, rgba(255,175,214,0.15), transparent)' }}
                 />
-                <div className="flex flex-col gap-2.5 mb-4">
-                  {features.map((f) => (
-                    <div key={f} className="flex items-center gap-2.5">
-                      <CheckCircleIcon size={14} color="#ffafd6" />
-                      <span className="text-sm" style={{ color: 'rgba(214,193,201,0.85)' }}>{f}</span>
-                    </div>
-                  ))}
+                <div style={{ borderLeft: '2px solid rgba(255,175,214,0.3)', paddingLeft: '12px' }}>
+                  <div className="flex flex-col gap-2.5 mb-4">
+                    {features.map((f) => (
+                      <div key={f} className="flex items-center gap-2.5">
+                        <CheckCircleIcon size={14} color="#ffafd6" />
+                        <span className="text-sm" style={{ color: 'rgba(214,193,201,0.85)' }}>{f}</span>
+                      </div>
+                    ))}
+                  </div>
                 </div>
                 <motion.button
                   id={`service-cta-${index}`}

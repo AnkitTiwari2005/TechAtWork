@@ -139,9 +139,13 @@ const ContactForm: React.FC<ContactFormProps> = ({ onSuccess, compact = false })
               animate={{ scale: 1 }}
               transition={{ type: 'spring', stiffness: 400, damping: 20 }}
             >
-              <svg width="32" height="32" viewBox="0 0 24 24" fill="none" stroke="#25D366" strokeWidth="2.5" strokeLinecap="round" strokeLinejoin="round">
+              <svg width="36" height="36" viewBox="0 0 24 24" fill="none">
                 <motion.path
                   d="M20 6L9 17l-5-5"
+                  stroke="#becc9a"
+                  strokeWidth="2.5"
+                  strokeLinecap="round"
+                  strokeLinejoin="round"
                   initial={{ pathLength: 0 }}
                   animate={{ pathLength: 1 }}
                   transition={{ duration: 0.6, ease: 'easeOut' }}

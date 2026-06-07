@@ -15,6 +15,10 @@ const TrustPill: React.FC<TrustPillProps> = ({ icon, label, index = 0 }) => {
       animate={{ opacity: 1, x: 0 }}
       transition={{ duration: 0.4, delay: index * 0.08 }}
       whileTap={{ scale: 0.95 }}
+      whileHover={{
+        borderColor: 'rgba(255,175,214,0.4)',
+        backgroundColor: 'rgba(255,175,214,0.1)',
+      }}
       style={{
         display: 'inline-flex',
         alignItems: 'center',

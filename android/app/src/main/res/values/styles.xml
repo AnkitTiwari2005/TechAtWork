@@ -16,6 +16,8 @@
         <item name="android:windowDrawsSystemBarBackgrounds">true</item>
         <item name="android:statusBarColor">#131313</item>
         <item name="android:windowLightStatusBar">false</item>
+        <item name="android:navigationBarColor">#131313</item>
+        <item name="android:windowLightNavigationBar">false</item>
     </style>
 
 
@@ -24,5 +26,7 @@
         <item name="android:windowDrawsSystemBarBackgrounds">true</item>
         <item name="android:statusBarColor">#131313</item>
         <item name="android:windowLightStatusBar">false</item>
+        <item name="android:navigationBarColor">#131313</item>
+        <item name="android:windowLightNavigationBar">false</item>
     </style>
 </resources>

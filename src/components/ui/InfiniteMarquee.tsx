@@ -29,7 +29,10 @@ const InfiniteMarquee: React.FC<InfiniteMarqueeProps> = ({
         onMouseEnter={(e) => { (e.currentTarget as HTMLElement).style.animationPlayState = 'paused'; }}
         onMouseLeave={(e) => { (e.currentTarget as HTMLElement).style.animationPlayState = 'running'; }}
       >
-        {doubled.map((item, i) => (
+        {doubled.map((item, i) => {
+          const baseIndex = i % items.length;
+          const isPink = baseIndex % 2 === 0;
+          return (
           <React.Fragment key={i}>
             <span
               style={{
@@ -37,8 +40,8 @@ const InfiniteMarquee: React.FC<InfiniteMarqueeProps> = ({
                 alignItems: 'center',
                 padding: '6px 18px',
                 borderRadius: '99px',
-                border: '0.5px solid rgba(255,175,214,0.15)',
-                background: 'rgba(255,175,214,0.04)',
+                border: isPink ? '0.5px solid rgba(255,175,214,0.15)' : '0.5px solid rgba(190,204,154,0.15)',
+                background: isPink ? 'rgba(255,175,214,0.04)' : 'rgba(190,204,154,0.04)',
                 fontSize: '12px',
                 fontWeight: 600,
                 color: 'rgba(214,193,201,0.7)',
@@ -60,7 +63,8 @@ const InfiniteMarquee: React.FC<InfiniteMarqueeProps> = ({
               />
             )}
           </React.Fragment>
-        ))}
+          );
+        })}
       </div>
     </div>
   );

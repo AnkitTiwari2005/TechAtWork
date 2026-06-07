@@ -8,116 +8,165 @@ const SplashScreen: React.FC = () => {
   useEffect(() => {
     const timer = setTimeout(() => {
       navigate('/home', { replace: true });
-    }, 2500);
+    }, 2800);
     return () => clearTimeout(timer);
   }, [navigate]);
 
   return (
-    <div className="splash-screen" style={{ position: 'relative', overflow: 'hidden' }}>
-      {/* Animated bloom behind logo */}
-      <motion.div
+    <div
+      className="splash-screen"
+      style={{
+        position: 'relative',
+        overflow: 'hidden',
+        background: 'radial-gradient(ellipse 60% 40% at 50% 45%, rgba(255,175,214,0.1) 0%, transparent 70%), #131313',
+      }}
+    >
+      {/* Three concentric animated SVG rings — centered behind logo */}
+      <div
         style={{
           position: 'absolute',
           top: '50%',
           left: '50%',
           transform: 'translate(-50%, -50%)',
-          width: '280px',
-          height: '280px',
-          borderRadius: '50%',
-          background: 'radial-gradient(circle at 50% 50%, rgba(255,175,214,0.18) 0%, transparent 70%)',
           zIndex: 1,
+          pointerEvents: 'none',
         }}
-        animate={{ scale: [0.8, 1.2, 0.8] }}
-        transition={{ duration: 3, repeat: Infinity, ease: 'easeInOut' }}
-      />
-
-      {/* Rotating SVG rings */}
-      <div style={{ position: 'absolute', top: '50%', left: '50%', transform: 'translate(-50%, -50%)', zIndex: 2 }}>
-        <motion.svg
-          width="200" height="200" viewBox="0 0 200 200"
-          style={{ position: 'absolute', top: '-100px', left: '-100px' }}
-          animate={{ rotate: 360 }}
-          transition={{ duration: 8, repeat: Infinity, ease: 'linear' }}
-        >
-          <circle
-            cx="100" cy="100" r="90"
+      >
+        <svg width="240" height="240" viewBox="0 0 240 240" style={{ position: 'absolute', top: '-120px', left: '-120px' }}>
+          {/* Inner ring */}
+          <motion.circle
+            cx="120" cy="120" r="60"
             fill="none"
-            stroke="rgba(255,175,214,0.25)"
+            stroke="rgba(255,175,214,0.35)"
             strokeWidth="1"
-            strokeDasharray="30 10"
+            strokeDasharray="4 8"
             strokeLinecap="round"
+            animate={{ rotate: 360 }}
+            transition={{ duration: 6, repeat: Infinity, ease: 'linear' }}
+            style={{ transformOrigin: '120px 120px' }}
           />
-        </motion.svg>
-        <motion.svg
-          width="240" height="240" viewBox="0 0 240 240"
-          style={{ position: 'absolute', top: '-120px', left: '-120px' }}
-          animate={{ rotate: -360 }}
-          transition={{ duration: 12, repeat: Infinity, ease: 'linear' }}
-        >
-          <circle
-            cx="120" cy="120" r="110"
+          {/* Middle ring */}
+          <motion.circle
+            cx="120" cy="120" r="80"
             fill="none"
-            stroke="rgba(255,175,214,0.15)"
-            strokeWidth="0.5"
-            strokeDasharray="20 15"
+            stroke="rgba(255,175,214,0.2)"
+            strokeWidth="0.8"
+            strokeDasharray="2 12"
             strokeLinecap="round"
+            animate={{ rotate: -360 }}
+            transition={{ duration: 10, repeat: Infinity, ease: 'linear' }}
+            style={{ transformOrigin: '120px 120px' }}
           />
-        </motion.svg>
+          {/* Outer ring */}
+          <motion.circle
+            cx="120" cy="120" r="105"
+            fill="none"
+            stroke="rgba(255,175,214,0.1)"
+            strokeWidth="0.5"
+            strokeDasharray="1 16"
+            strokeLinecap="round"
+            animate={{ rotate: 360 }}
+            transition={{ duration: 16, repeat: Infinity, ease: 'linear' }}
+            style={{ transformOrigin: '120px 120px' }}
+          />
+        </svg>
       </div>
-
-      {/* Background gradient blobs */}
-      <div
-        className="gradient-blob"
-        style={{ width: '300px', height: '300px', background: 'rgba(255,175,214,0.08)', top: '20%', left: '50%', transform: 'translateX(-50%)' }}
-      />
-      <div
-        className="gradient-blob"
-        style={{ width: '200px', height: '200px', background: 'rgba(190,204,154,0.06)', bottom: '20%', right: '10%' }}
-      />
 
       {/* Logo + wordmark */}
       <motion.div
-        className="flex flex-col items-center gap-6 z-10 relative"
+        className="flex flex-col items-center gap-5 z-10 relative"
         initial={{ opacity: 0, y: 20 }}
         animate={{ opacity: 1, y: 0 }}
         transition={{ duration: 0.8, ease: [0.16, 1, 0.3, 1] }}
       >
-        {/* Logo mark */}
+        {/* SVG Logo mark — no external image dependency */}
         <motion.div
-          className="animate-pulse-glow"
           style={{
-            width: '100px',
-            height: '100px',
-            borderRadius: '28px',
-            overflow: 'hidden',
-            boxShadow: '0 0 40px rgba(255,175,214,0.4), 0 0 80px rgba(255,175,214,0.2)',
+            width: '96px',
+            height: '96px',
+            borderRadius: '26px',
+            background: 'linear-gradient(135deg, rgba(255,175,214,0.15) 0%, rgba(227,140,184,0.1) 100%)',
+            border: '0.5px solid rgba(255,175,214,0.3)',
+            display: 'flex',
+            alignItems: 'center',
+            justifyContent: 'center',
+            boxShadow: '0 0 40px rgba(255,175,214,0.3), 0 0 80px rgba(255,175,214,0.15), inset 0 1px 0 rgba(255,255,255,0.1)',
           }}
+          animate={{
+            boxShadow: [
+              '0 0 40px rgba(255,175,214,0.3), 0 0 80px rgba(255,175,214,0.15)',
+              '0 0 60px rgba(255,175,214,0.5), 0 0 100px rgba(255,175,214,0.25)',
+              '0 0 40px rgba(255,175,214,0.3), 0 0 80px rgba(255,175,214,0.15)',
+            ],
+          }}
+          transition={{ duration: 2.5, repeat: Infinity, ease: 'easeInOut' }}
         >
-          <img
-            src="/assets/logo.png"
-            alt="Tech@Work"
-            style={{ width: '100%', height: '100%', objectFit: 'cover' }}
-          />
+          <span
+            style={{
+              fontFamily: '"Space Grotesk", sans-serif',
+              fontWeight: 900,
+              fontSize: '28px',
+              letterSpacing: '-0.04em',
+              background: 'linear-gradient(135deg, #ffafd6, #e38cb8)',
+              WebkitBackgroundClip: 'text',
+              WebkitTextFillColor: 'transparent',
+              backgroundClip: 'text',
+            }}
+          >
+            @
+          </span>
         </motion.div>
 
-        {/* Wordmark with gradient */}
+        {/* Wordmark — inline gradient safe for Android WebView */}
         <div className="text-center">
           <h1
-            className="text-3xl font-headline font-black tracking-tighter text-gradient"
+            style={{
+              fontFamily: '"Space Grotesk", sans-serif',
+              fontWeight: 900,
+              fontSize: '32px',
+              letterSpacing: '-0.04em',
+              margin: 0,
+              lineHeight: 1,
+              background: 'linear-gradient(135deg, #ffafd6 0%, #e38cb8 100%)',
+              WebkitBackgroundClip: 'text',
+              WebkitTextFillColor: 'transparent',
+              backgroundClip: 'text',
+            }}
           >
             Tech@Work
           </h1>
+          {/* Divider */}
+          <div
+            style={{
+              width: '80px',
+              height: '1px',
+              background: 'rgba(255,175,214,0.15)',
+              margin: '10px auto 8px',
+            }}
+          />
           <p
-            className="text-xs font-semibold uppercase tracking-[0.25em] mt-1"
-            style={{ color: 'rgba(214,193,201,0.5)' }}
+            style={{
+              fontSize: '10px',
+              fontWeight: 700,
+              letterSpacing: '0.3em',
+              textTransform: 'uppercase',
+              color: 'rgba(214,193,201,0.5)',
+            }}
           >
             AI-Driven Digital Transformation
           </p>
         </div>
 
-        {/* Premium progress bar */}
+        {/* Progress bar */}
         <motion.div
-          style={{ width: '120px', height: '2px', background: 'rgba(255,175,214,0.12)', borderRadius: '99px', overflow: 'hidden', marginTop: '8px' }}
+          style={{
+            width: '120px',
+            height: '2px',
+            background: 'rgba(255,175,214,0.1)',
+            borderRadius: '99px',
+            overflow: 'hidden',
+            marginTop: '4px',
+          }}
           initial={{ opacity: 0 }}
           animate={{ opacity: 1 }}
           transition={{ delay: 0.5 }}
@@ -130,7 +179,7 @@ const SplashScreen: React.FC = () => {
             }}
             initial={{ width: '0%' }}
             animate={{ width: '100%' }}
-            transition={{ duration: 2.2, ease: 'easeOut', delay: 0.3 }}
+            transition={{ duration: 2.4, ease: 'easeOut', delay: 0.3 }}
           />
         </motion.div>
       </motion.div>

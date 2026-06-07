@@ -29,9 +29,9 @@ const CORE_VALUES = [
 ];
 
 const TEAM = [
-  { initials: 'SW', name: 'Shiv W.', role: 'AI & Strategy' },
-  { initials: 'AT', name: 'Ankit T.', role: 'Web Engineering' },
-  { initials: 'MK', name: 'Manan K.', role: 'Performance Marketing' },
+  { initials: 'SW', name: 'Saurabh W.', role: 'CEO & Strategy' },
+  { initials: 'AT', name: 'Ankit T.', role: 'CTO & Product' },
+  { initials: 'MK', name: 'Mohit K.', role: 'Lead Engineer' },
 ];
 
 const EXPERTISE = ['AI Engineering', 'Data Science', 'Web Architecture', 'Performance Marketing', 'Business Strategy', 'LLM Deployment', 'Cloud Infrastructure', 'Product Design'];
@@ -110,8 +110,10 @@ const AboutScreen: React.FC = () => {
           <div className="gradient-blob" style={{ width: '150px', height: '150px', background: 'rgba(255,175,214,0.1)', bottom: '-30px', right: '-30px' }} />
           <div className="relative z-10">
             <span className="section-label">Our Mission</span>
-            {/* SVG quotation mark */}
-            <div style={{ color: 'rgba(255,175,214,0.15)', fontSize: '60px', lineHeight: 0.8, fontFamily: 'Georgia, serif', marginTop: '12px' }}>&ldquo;</div>
+            {/* SVG quotation marks */}
+            <svg width="32" height="24" viewBox="0 0 32 24" fill="rgba(255,175,214,0.15)" style={{ marginBottom: '8px', marginTop: '12px', display: 'block' }}>
+              <path d="M0 24V14.4C0 10.08 1.44 6.48 4.32 3.6C7.2 1.2 10.56 0 14.4 0v4.8C12 4.8 9.84 5.76 8.16 7.68 6.48 9.12 5.52 10.56 5.28 12H10.08V24H0zm18 0V14.4c0-4.32 1.44-7.92 4.32-10.8C25.2 1.2 28.56 0 32.4 0v4.8C30 4.8 27.84 5.76 26.16 7.68 24.48 9.12 23.52 10.56 23.28 12H28.08V24H18z" />
+            </svg>
             <h2 className="text-lg font-headline font-bold text-white mt-1 mb-3">
               We build intelligent systems that drive measurable outcomes.
             </h2>
@@ -174,43 +176,54 @@ const AboutScreen: React.FC = () => {
           <span className="section-label">Our Team</span>
           <h2 className="text-2xl font-headline font-bold text-white mt-2">The People Behind The Work</h2>
         </div>
-        <div className="flex gap-4 mb-5">
-          {TEAM.map((member, i) => (
+        <motion.div
+          className="flex gap-4 mb-5"
+          variants={staggerContainerVariants}
+          initial="hidden"
+          whileInView="visible"
+          viewport={{ once: true, margin: '-30px' }}
+        >
+          {[{ initials: 'SW', name: 'Saurabh W.', role: 'CEO & Strategy' }, { initials: 'AT', name: 'Ankit T.', role: 'CTO & Product' }, { initials: 'MK', name: 'Mohit K.', role: 'Lead Engineer' }].map((member, i) => (
             <motion.div
               key={member.initials}
-              initial={{ opacity: 0, y: 20 }}
-              whileInView={{ opacity: 1, y: 0 }}
-              viewport={{ once: true }}
-              transition={{ delay: i * 0.1 }}
-              className="flex-1"
+              variants={staggerItemVariants}
+              style={{
+                flex: 1,
+                background: 'rgba(28,22,26,0.85)',
+                border: '0.5px solid rgba(255,175,214,0.12)',
+                borderRadius: '16px',
+                padding: '20px 16px',
+                textAlign: 'center',
+                position: 'relative',
+                overflow: 'hidden',
+              }}
             >
-              <GlassCard className="p-4 flex flex-col items-center gap-3 text-center">
-                <div
-                  style={{
-                    width: '52px',
-                    height: '52px',
-                    borderRadius: '50%',
-                    background: 'linear-gradient(135deg, rgba(255,175,214,0.2), rgba(227,140,184,0.2))',
-                    border: '0.5px solid rgba(255,175,214,0.3)',
-                    display: 'flex',
-                    alignItems: 'center',
-                    justifyContent: 'center',
-                    fontSize: '14px',
-                    fontWeight: 700,
-                    color: '#ffafd6',
-                    fontFamily: '"Space Grotesk", sans-serif',
-                  }}
-                >
-                  {member.initials}
-                </div>
-                <div>
-                  <p className="text-xs font-bold text-white">{member.name}</p>
-                  <p className="text-[10px] mt-0.5" style={{ color: 'rgba(214,193,201,0.55)' }}>{member.role}</p>
-                </div>
-              </GlassCard>
+              {/* Avatar */}
+              <div
+                style={{
+                  width: '56px',
+                  height: '56px',
+                  borderRadius: '50%',
+                  background: `linear-gradient(135deg, rgba(255,175,214,0.2) 0%, rgba(227,140,184,0.1) 100%)`,
+                  border: '1.5px solid rgba(255,175,214,0.25)',
+                  display: 'flex',
+                  alignItems: 'center',
+                  justifyContent: 'center',
+                  margin: '0 auto 12px',
+                  boxShadow: '0 0 20px rgba(255,175,214,0.1)',
+                }}
+              >
+                <span style={{ fontSize: '18px', fontWeight: 700, fontFamily: '"Space Grotesk", sans-serif', color: '#ffafd6' }}>{member.initials}</span>
+              </div>
+              <div>
+                <p style={{ fontSize: '14px', fontWeight: 700, color: '#fff', margin: 0, fontFamily: '"Space Grotesk", sans-serif' }}>{member.name}</p>
+                <p style={{ fontSize: '11px', color: 'rgba(214,193,201,0.6)', margin: '2px 0 0', letterSpacing: '0.05em' }}>{member.role}</p>
+              </div>
+              {/* Role indicator dot */}
+              <div style={{ position: 'absolute', top: '12px', right: '12px', width: '6px', height: '6px', borderRadius: '50%', background: '#ffafd6', opacity: 0.5 }} />
             </motion.div>
           ))}
-        </div>
+        </motion.div>
         <GlassCard className="p-5">
           <p className="text-sm leading-relaxed" style={{ color: 'rgba(214,193,201,0.75)' }}>
             Our team combines deep technical expertise in artificial intelligence, web engineering, and data science with strategic business acumen to deliver solutions that actually work.

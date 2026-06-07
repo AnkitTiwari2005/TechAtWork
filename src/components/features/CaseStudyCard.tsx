@@ -1,5 +1,6 @@
 import React from 'react';
 import { motion } from 'framer-motion';
+import { ArrowRightIcon } from '../ui/Icon';
 
 interface CaseStudyCardProps {
   image: string;
@@ -28,26 +29,41 @@ const CaseStudyCard: React.FC<CaseStudyCardProps> = ({
 }) => {
   return (
     <motion.div
-      initial={{ opacity: 0, y: 30 }}
-      whileInView={{ opacity: 1, y: 0 }}
+      initial={{ opacity: 0, y: 30, borderColor: 'rgba(255,175,214,0.05)' }}
+      whileInView={{ opacity: 1, y: 0, borderColor: 'rgba(255,175,214,0.2)' }}
       viewport={{ once: true, margin: '-40px' }}
       transition={{ duration: 0.5, delay: index * 0.1 }}
-      className="glass-card overflow-hidden cursor-pointer"
+      style={{
+        background: 'rgba(28,28,28,0.7)',
+        backdropFilter: 'blur(20px) saturate(150%)',
+        border: '0.5px solid rgba(255,175,214,0.05)',
+        borderRadius: '20px',
+        overflow: 'hidden',
+        boxShadow: 'inset 0 1px 0 rgba(255,255,255,0.06), 0 8px 32px rgba(0,0,0,0.4)',
+      }}
       onClick={onClick}
       whileTap={{ scale: 0.98 }}
     >
-      {/* Image */}
-      <div className="relative" style={{ height: '180px', overflow: 'hidden' }}>
+      {/* Image — 200px tall */}
+      <div className="relative" style={{ height: '200px', overflow: 'hidden' }}>
         <img
           src={image}
           alt={`${company} case study`}
           className="w-full h-full object-cover"
-          style={{ filter: 'brightness(0.85)' }}
+          style={{ filter: 'brightness(0.9) contrast(1.05) saturate(0.95)' }}
         />
+        {/* Base gradient fade */}
         <div
           className="absolute inset-0"
           style={{
             background: 'linear-gradient(to bottom, transparent 40%, rgba(19,19,19,0.95) 100%)',
+          }}
+        />
+        {/* Colored tint overlay matching tagColor */}
+        <div
+          className="absolute inset-0"
+          style={{
+            background: `linear-gradient(to bottom right, ${tagColor}15 0%, transparent 60%)`,
           }}
         />
         {/* Category badge */}
@@ -74,7 +90,7 @@ const CaseStudyCard: React.FC<CaseStudyCardProps> = ({
             </svg>
           </button>
         )}
-        {/* Company name overlaid on image */}
+        {/* Company name overlaid */}
         <div className="absolute bottom-3 left-4">
           <h3 className="text-xl font-headline font-black text-white tracking-tight">{company}</h3>
         </div>
@@ -90,14 +106,14 @@ const CaseStudyCard: React.FC<CaseStudyCardProps> = ({
         <div className="flex gap-3 mb-4">
           {stats.map((stat, i) => (
             <div key={i} className="flex-1 text-center py-2.5 rounded-xl" style={{ background: 'rgba(255,175,214,0.06)' }}>
-              <div className="text-lg font-headline font-black" style={{ color: '#ffafd6' }}>{stat.value}</div>
+              <div className="text-lg font-headline font-black text-gradient-static">{stat.value}</div>
               <div className="text-[10px] font-semibold uppercase tracking-wider" style={{ color: 'rgba(214,193,201,0.6)' }}>{stat.label}</div>
             </div>
           ))}
         </div>
 
         {/* Tags */}
-        <div className="flex flex-wrap gap-1.5">
+        <div className="flex flex-wrap gap-1.5 mb-4">
           {tags.map((tag, i) => (
             <span
               key={i}
@@ -109,9 +125,21 @@ const CaseStudyCard: React.FC<CaseStudyCardProps> = ({
           ))}
         </div>
 
-        <div className="mt-4 flex items-center gap-1 text-xs font-semibold" style={{ color: '#ffafd6' }}>
-          Read full case study →
-        </div>
+        {/* Upgrade B: pill CTA button */}
+        <motion.div
+          className="inline-flex items-center gap-1.5 text-xs font-semibold"
+          style={{
+            background: 'rgba(255,175,214,0.06)',
+            border: '0.5px solid rgba(255,175,214,0.2)',
+            borderRadius: '8px',
+            padding: '8px 14px',
+            color: '#ffafd6',
+          }}
+          whileTap={{ scale: 0.96 }}
+        >
+          Read full case study
+          <ArrowRightIcon size={12} color="#ffafd6" />
+        </motion.div>
       </div>
     </motion.div>
   );

@@ -179,7 +179,19 @@ const ServicesScreen: React.FC = () => {
           </p>
         </div>
 
-        <div className="grid grid-cols-2 gap-3">
+        <div className="grid grid-cols-2 gap-3" style={{ position: 'relative' }}>
+          {/* Decorative crossing dashed lines behind the grid */}
+          <svg
+            style={{ position: 'absolute', inset: 0, width: '100%', height: '100%', pointerEvents: 'none', zIndex: 0 }}
+            viewBox="0 0 200 200"
+            preserveAspectRatio="none"
+            fill="none"
+          >
+            {/* tile 1 (top-left) center to tile 4 (bottom-right) center */}
+            <line x1="50" y1="50" x2="150" y2="150" stroke="rgba(255,175,214,0.08)" strokeWidth="1" strokeDasharray="4 6" />
+            {/* tile 2 (top-right) center to tile 3 (bottom-left) center */}
+            <line x1="150" y1="50" x2="50" y2="150" stroke="rgba(255,175,214,0.08)" strokeWidth="1" strokeDasharray="4 6" />
+          </svg>
           {AI_FEATURES.map((feat, i) => (
             <motion.div
               key={feat.title}
@@ -187,6 +199,7 @@ const ServicesScreen: React.FC = () => {
               whileInView={{ opacity: 1, y: 0 }}
               viewport={{ once: true, margin: '-30px' }}
               transition={{ duration: 0.4, delay: i * 0.08 }}
+              style={{ zIndex: 1 }}
             >
               <GlassCard className="p-4 h-full">
                 <div className="mb-2">{feat.icon}</div>
