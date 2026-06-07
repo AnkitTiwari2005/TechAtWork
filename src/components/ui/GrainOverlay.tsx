@@ -7,6 +7,13 @@ const GrainOverlay: React.FC = () => (
     width="100%"
     height="100%"
     aria-hidden="true"
+    style={{
+      pointerEvents: 'none',
+      touchAction: 'none',
+      userSelect: 'none',
+      WebkitUserSelect: 'none',
+      willChange: 'transform',
+    } as React.CSSProperties}
   >
     <filter id="grain">
       <feTurbulence

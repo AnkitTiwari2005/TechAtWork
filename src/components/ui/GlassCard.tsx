@@ -6,8 +6,9 @@ interface GlassCardProps {
   className?: string;
   onClick?: () => void;
   variant?: 'default' | 'elevated' | 'flush';
-  animate?: boolean;
+  enableAnimations?: boolean;
   style?: React.CSSProperties;
+  id?: string;
 }
 
 const GlassCard: React.FC<GlassCardProps> = ({
@@ -15,8 +16,9 @@ const GlassCard: React.FC<GlassCardProps> = ({
   className = '',
   onClick,
   variant = 'default',
-  animate = true,
+  enableAnimations = true,
   style,
+  id,
 }) => {
   const baseStyle: React.CSSProperties = {
     background: variant === 'elevated' ? 'rgba(28,28,28,0.85)' : 'rgba(28,28,28,0.7)',
@@ -26,12 +28,14 @@ const GlassCard: React.FC<GlassCardProps> = ({
     boxShadow: variant === 'elevated'
       ? 'inset 0 1px 0 rgba(255,255,255,0.08), 0 16px 48px rgba(0,0,0,0.5), 0 0 0 1px rgba(255,175,214,0.08)'
       : 'inset 0 1px 0 rgba(255,255,255,0.06), 0 8px 32px rgba(0,0,0,0.4)',
+    ...(onClick ? { position: 'relative', overflow: 'hidden' } : {}),
     ...style,
   };
 
-  if (onClick || animate) {
+  if (onClick || enableAnimations) {
     return (
       <motion.div
+        id={id}
         style={baseStyle}
         className={className}
         onClick={onClick}
@@ -44,7 +48,7 @@ const GlassCard: React.FC<GlassCardProps> = ({
   }
 
   return (
-    <div style={baseStyle} className={className}>
+    <div id={id} style={baseStyle} className={className}>
       {children}
     </div>
   );

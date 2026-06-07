@@ -8,6 +8,16 @@ export default defineConfig({
   },
   build: {
     outDir: 'dist',
-    sourcemap: true,
+    sourcemap: false,
+    rollupOptions: {
+      output: {
+        manualChunks: {
+          vendor: ['react', 'react-dom', 'react-router-dom'],
+          motion: ['framer-motion'],
+          capacitor: ['@capacitor/core', '@capacitor/browser', '@capacitor/haptics', '@capacitor/preferences'],
+        },
+      },
+    },
   },
 })
+

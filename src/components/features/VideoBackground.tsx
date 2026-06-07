@@ -1,4 +1,4 @@
-import React, { useRef, useEffect } from 'react';
+import React, { useRef, useEffect, useState } from 'react';
 
 interface VideoBackgroundProps {
   src: string;
@@ -7,14 +7,14 @@ interface VideoBackgroundProps {
 
 const VideoBackground: React.FC<VideoBackgroundProps> = ({ src, opacity = 0.28 }) => {
   const videoRef = useRef<HTMLVideoElement>(null);
+  const [visible, setVisible] = useState(false);
 
   useEffect(() => {
     const video = videoRef.current;
-    if (video) {
-      video.play().catch(() => {
-        // Autoplay blocked — silent fail, static bg will show
-      });
-    }
+    if (!video) return;
+    video.play()
+      .then(() => setVisible(true))
+      .catch(() => setVisible(false));
   }, []);
 
   return (
@@ -26,7 +26,7 @@ const VideoBackground: React.FC<VideoBackgroundProps> = ({ src, opacity = 0.28 }
       muted
       loop
       playsInline
-      style={{ opacity }}
+      style={{ opacity: visible ? opacity : 0, transition: 'opacity 0.5s ease' }}
     />
   );
 };

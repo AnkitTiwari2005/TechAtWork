@@ -61,6 +61,15 @@ function parsePercent(value: string): number | null {
   return match ? parseInt(match[1], 10) : null;
 }
 
+let _Browser: typeof import('@capacitor/browser').Browser | null = null;
+async function openUrl(url: string) {
+  if (!_Browser) {
+    try { _Browser = (await import('@capacitor/browser')).Browser; } catch {}
+  }
+  if (_Browser) await _Browser.open({ url });
+  else window.open(url, '_blank');
+}
+
 const CaseStudiesScreen: React.FC = () => {
   const [activeFilter, setActiveFilter] = useState('All');
   const [selectedCase, setSelectedCase] = useState<typeof ALL_CASES[0] | null>(null);
@@ -79,13 +88,6 @@ const CaseStudiesScreen: React.FC = () => {
         dialogTitle: `Share ${company} case study`,
       });
     } catch { /* share not available */ }
-  };
-
-  const openUrl = async (url: string) => {
-    try {
-      const { Browser } = await import('@capacitor/browser');
-      await Browser.open({ url });
-    } catch { window.open(url, '_blank'); }
   };
 
   return (
@@ -136,10 +138,7 @@ const CaseStudiesScreen: React.FC = () => {
             id="cases-consult-cta"
             onClick={async () => {
               const url = `https://api.whatsapp.com/send/?phone=919811797407&text=${encodeURIComponent('Hi! I saw your case studies and would like to discuss a similar project.')}&type=phone_number&app_absent=0`;
-              try {
-                const { Browser } = await import('@capacitor/browser');
-                await Browser.open({ url });
-              } catch { window.open(url, '_blank'); }
+              await openUrl(url);
             }}
             className="w-full py-3 rounded-xl font-semibold text-sm"
             style={{ background: 'linear-gradient(135deg, #ffafd6, #e38cb8)', color: '#57173e' }}
@@ -299,10 +298,7 @@ const CaseStudiesScreen: React.FC = () => {
                 id={`sheet-discuss-${selectedCase.company.toLowerCase()}`}
                 onClick={async () => {
                   const url = `https://api.whatsapp.com/send/?phone=919811797407&text=${encodeURIComponent(`Hi! I saw the ${selectedCase.company} case study and would like something similar.`)}&type=phone_number&app_absent=0`;
-                  try {
-                    const { Browser } = await import('@capacitor/browser');
-                    await Browser.open({ url });
-                  } catch { window.open(url, '_blank'); }
+                  await openUrl(url);
                   setSelectedCase(null);
                 }}
                 className="flex-1 py-3 rounded-xl font-bold text-sm"

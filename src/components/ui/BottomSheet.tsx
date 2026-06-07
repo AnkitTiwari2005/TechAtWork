@@ -20,18 +20,15 @@ const BottomSheet: React.FC<BottomSheetProps> = ({ isOpen, onClose, title, subti
     setSheetOpen(isOpen);
   }, [isOpen, setSheetOpen]);
 
-  // Bug 2 Part A: lock body + screen-content scroll when open
+  // Consolidated scroll lock
   useEffect(() => {
-    const scrollable = document.querySelector('.screen-content') as HTMLElement;
+    const scrollable = document.querySelector('.screen-content') as HTMLElement | null;
     if (isOpen) {
-      if (scrollable) scrollable.style.overflow = 'hidden';
+      if (scrollable) scrollable.style.overflowY = 'hidden';
       document.body.style.overflow = 'hidden';
-    } else {
-      if (scrollable) scrollable.style.overflow = '';
-      document.body.style.overflow = '';
     }
     return () => {
-      if (scrollable) scrollable.style.overflow = '';
+      if (scrollable) scrollable.style.overflowY = '';
       document.body.style.overflow = '';
     };
   }, [isOpen]);
@@ -179,10 +176,10 @@ const BottomSheet: React.FC<BottomSheetProps> = ({ isOpen, onClose, title, subti
               </div>
             )}
 
-            {/* Bug 2 Part B: content stops scroll propagation */}
+            {/* Content area — outer sheet already has maxHeight: 88vh */}
             <div
-              className="px-6 pb-10 overflow-y-auto flex-1"
-              style={{ maxHeight: 'calc(88vh - 100px)', WebkitOverflowScrolling: 'touch' } as any}
+              className="px-6 pb-10 flex-1"
+              style={{ overflowY: 'auto', WebkitOverflowScrolling: 'touch' } as React.CSSProperties}
               onTouchMove={(e) => e.stopPropagation()}
             >
               {children}

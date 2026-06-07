@@ -123,7 +123,7 @@ const ContactForm: React.FC<ContactFormProps> = ({ onSuccess, compact = false })
   };
 
   return (
-    <div className="relative">
+    <div className="relative" style={{ minHeight: '480px', overflow: 'hidden', borderRadius: '16px' }}>
       <AnimatePresence>
         {showSuccess && (
           <motion.div

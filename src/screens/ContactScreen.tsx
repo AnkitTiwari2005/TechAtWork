@@ -5,29 +5,27 @@ import GlassCard from '../components/ui/GlassCard';
 import ContactForm from '../components/features/ContactForm';
 import { MailIcon, PhoneIcon, ClockIcon } from '../components/ui/Icon';
 
+let _Browser: typeof import('@capacitor/browser').Browser | null = null;
+async function openUrl(url: string) {
+  if (!_Browser) {
+    try { _Browser = (await import('@capacitor/browser')).Browser; } catch {}
+  }
+  if (_Browser) await _Browser.open({ url });
+  else window.open(url, '_blank');
+}
+
 const ContactScreen: React.FC = () => {
   const openPhone = async () => {
-    const url = 'tel:+919811797407';
-    try {
-      const { Browser } = await import('@capacitor/browser');
-      await Browser.open({ url });
-    } catch { window.open(url); }
+    await openUrl('tel:+919811797407');
   };
 
   const openEmail = async () => {
-    const url = `mailto:shivskukreja@gmail.com?subject=${encodeURIComponent('Tech@Work Inquiry from App')}`;
-    try {
-      const { Browser } = await import('@capacitor/browser');
-      await Browser.open({ url });
-    } catch { window.open(url); }
+    await openUrl(`mailto:shivskukreja@gmail.com?subject=${encodeURIComponent('Tech@Work Inquiry from App')}`);
   };
 
   const openWhatsApp = async () => {
     const url = `https://api.whatsapp.com/send/?phone=919811797407&text=${encodeURIComponent('Hi Tech@Work! I\'d like to discuss a project.')}&type=phone_number&app_absent=0`;
-    try {
-      const { Browser } = await import('@capacitor/browser');
-      await Browser.open({ url });
-    } catch { window.open(url, '_blank'); }
+    await openUrl(url);
   };
 
   return (

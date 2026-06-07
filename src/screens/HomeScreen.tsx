@@ -1,4 +1,4 @@
-import React, { useRef, useState, useCallback } from 'react';
+import React, { useRef, useState, useCallback, useMemo } from 'react';
 import { motion, AnimatePresence } from 'framer-motion';
 import BlurText from '../components/ui/BlurText';
 import StatCounter from '../components/ui/StatCounter';
@@ -9,8 +9,21 @@ import VideoBackground from '../components/features/VideoBackground';
 import WhatsAppFAB from '../components/features/WhatsAppFAB';
 import MethodologyStep from '../components/features/MethodologyStep';
 import CaseStudyCard from '../components/features/CaseStudyCard';
-import { BrainIcon, GlobeIcon, ChartIcon, MegaphoneIcon, TargetIcon, RocketIcon, BuildingIcon, HeartIcon, SparkleIcon, SearchIcon, LightningIcon } from '../components/ui/Icon';
+import {
+  BrainIcon, GlobeIcon, ChartIcon, MegaphoneIcon, TargetIcon,
+  RocketIcon, BuildingIcon, HeartIcon, SparkleIcon, SearchIcon,
+  LightningIcon, ClockIcon, CheckCircleIcon, ArrowRightIcon,
+} from '../components/ui/Icon';
 import { staggerContainerVariants, staggerItemVariants } from '../hooks/useScrollReveal';
+
+let _Browser: typeof import('@capacitor/browser').Browser | null = null;
+async function openUrl(url: string) {
+  if (!_Browser) {
+    try { _Browser = (await import('@capacitor/browser')).Browser; } catch {}
+  }
+  if (_Browser) await _Browser.open({ url });
+  else window.open(url, '_blank');
+}
 
 const CASE_STUDIES = [
   {
@@ -41,7 +54,7 @@ const CASE_STUDIES = [
     category: 'Performance',
     tagColor: '#e38cb8',
     description: 'A premier digital intelligence platform delivering wealth building guides and cutting-edge technology insights. Engineered for scale, serving 500,000+ readers.',
-    stats: [{ value: '60%', label: 'Faster Load' }, { value: '45%', label: 'Organic Traffic ↑' }],
+    stats: [{ value: '60%', label: 'Faster Load' }, { value: '45%', label: 'Organic Traffic' }],
     tags: ['Headless CMS', 'Performance', 'SEO'],
     challenge: 'As traffic surged, the legacy monolithic architecture struggled with load times and SEO optimization, resulting in high bounce rates and stagnant user growth.',
     impact: 'We decoupled the frontend using a modern headless architecture and optimized caching strategies. This resulted in a 60% improvement in page load speeds, a 45% increase in organic search traffic, and a highly streamlined content pipeline.',
@@ -55,196 +68,183 @@ const METHODOLOGY = [
   { icon: <RocketIcon size={22} color="#ffafd6" />, step: '04', color: '#ffafd6', title: 'Scale', description: 'Ongoing optimisation, monitoring, and strategic expansion to ensure sustained growth and maximum ROI.' },
 ];
 
-const PARTICLES = Array.from({ length: 12 }, (_, i) => ({
-  id: i,
-  x: Math.random() * 100,
-  y: Math.random() * 100,
-  size: 2 + Math.random() * 2,
-  duration: 3 + Math.random() * 4,
-  delay: Math.random() * 3,
-}));
-
-const openWhatsApp = async () => {
-  const url = `https://api.whatsapp.com/send/?phone=919811797407&text=${encodeURIComponent('Hi Tech@Work! I found you via your app and would like to discuss my project.')}&type=phone_number&app_absent=0`;
-  try {
-    const { Browser } = await import('@capacitor/browser');
-    await Browser.open({ url });
-  } catch { window.open(url, '_blank'); }
-};
+const STATS = [
+  { target: 50, suffix: '+', label: 'Projects Delivered', icon: <RocketIcon size={18} />, color: '#ffafd6' },
+  { target: 20, suffix: '+', label: 'Industries Served', icon: <BuildingIcon size={18} />, color: '#becc9a' },
+  { target: 95, suffix: '%', label: 'Client Retention', icon: <HeartIcon size={18} />, color: '#e38cb8' },
+];
 
 const HomeScreen: React.FC = () => {
   const [selectedCase, setSelectedCase] = useState<(typeof CASE_STUDIES)[0] | null>(null);
   const carouselRef = useRef<HTMLDivElement>(null);
   const [activeDot, setActiveDot] = useState(0);
 
+  const PARTICLES = useMemo(() => Array.from({ length: 8 }, (_, i) => ({
+    id: i,
+    x: [8, 18, 32, 48, 62, 74, 85, 93][i],
+    y: [15, 55, 25, 70, 40, 80, 20, 60][i],
+    size: [2, 3, 2, 3, 2, 3, 2, 3][i],
+    duration: [4, 5, 6, 4.5, 5.5, 3.5, 6, 4][i],
+    delay: [0, 0.8, 1.6, 0.4, 1.2, 2.0, 0.6, 1.8][i],
+  })), []);
+
   const handleCarouselScroll = useCallback(() => {
     const el = carouselRef.current;
     if (!el) return;
-    const scrollLeft = el.scrollLeft;
-    const cardWidth = el.scrollWidth / CASE_STUDIES.length;
-    setActiveDot(Math.round(scrollLeft / cardWidth));
+    const firstCard = el.firstElementChild as HTMLElement;
+    if (!firstCard) return;
+    const cardWidth = firstCard.offsetWidth + 16;
+    const dot = Math.round(el.scrollLeft / cardWidth);
+    setActiveDot(Math.min(dot, CASE_STUDIES.length - 1));
+  }, []);
+
+  const openWhatsApp = useCallback(async () => {
+    const url = `https://api.whatsapp.com/send/?phone=919811797407&text=${encodeURIComponent('Hi Tech@Work! I found you via your app and would like to discuss my project.')}&type=phone_number&app_absent=0`;
+    await openUrl(url);
   }, []);
 
   return (
     <div style={{ background: '#131313', minHeight: '100vh' }}>
-      {/* HERO */}
-      <section className="page-hero" style={{ minHeight: '60vh', position: 'relative', overflow: 'hidden' }}>
-        <VideoBackground src="/assets/hero-video.mp4" opacity={0.18} />
-        <div className="hero-overlay" />
 
-        {/* Floating particles */}
-        <div className="absolute inset-0 pointer-events-none" style={{ zIndex: 2 }}>
+      {/* ── HERO ── */}
+      <section style={{ position: 'relative', overflow: 'hidden', minHeight: '70vh', display: 'flex', flexDirection: 'column', justifyContent: 'flex-end', padding: '32px 20px' }}>
+        <VideoBackground src="/assets/hero-video.mp4" opacity={0.15} />
+        <div className="hero-overlay" />
+        {/* Pink vignette bottom-left */}
+        <div style={{ position: 'absolute', inset: 0, background: 'radial-gradient(ellipse 60% 50% at 0% 100%, rgba(255,175,214,0.06) 0%, transparent 60%)', pointerEvents: 'none', zIndex: 1 }} />
+
+        {/* Particles */}
+        <div style={{ position: 'absolute', inset: 0, pointerEvents: 'none', zIndex: 2 }}>
           {PARTICLES.map((p) => (
-            <motion.div
-              key={p.id}
-              style={{
-                position: 'absolute',
-                left: `${p.x}%`,
-                top: `${p.y}%`,
-                width: p.size,
-                height: p.size,
-                borderRadius: '50%',
-                background: 'rgba(255,175,214,0.4)',
-              }}
-              animate={{
-                y: [0, -20, 0],
-                opacity: [0.2, 0.6, 0.2],
-              }}
-              transition={{
-                duration: p.duration,
-                delay: p.delay,
-                repeat: Infinity,
-                ease: 'easeInOut',
-              }}
+            <motion.div key={p.id}
+              style={{ position: 'absolute', left: `${p.x}%`, top: `${p.y}%`, width: p.size, height: p.size, borderRadius: '50%', background: 'rgba(255,175,214,0.35)' }}
+              animate={{ y: [0, -18, 0], opacity: [0.2, 0.5, 0.2] }}
+              transition={{ duration: p.duration, delay: p.delay, repeat: Infinity, ease: 'easeInOut' }}
             />
           ))}
         </div>
 
-        <div className="relative z-10">
-          {/* Section label with pulsing dot */}
-          <motion.div
-            className="flex items-center gap-2 mb-4"
-            initial={{ opacity: 0, y: 10 }}
-            animate={{ opacity: 1, y: 0 }}
-            transition={{ delay: 0.2 }}
-          >
-            <motion.div
-              style={{
-                width: '6px', height: '6px', borderRadius: '50%',
-                background: '#ffafd6',
-                boxShadow: '0 0 8px rgba(255,175,214,0.8)',
-              }}
-              animate={{ scale: [1, 1.3, 1], opacity: [0.8, 1, 0.8] }}
-              transition={{ duration: 2, repeat: Infinity }}
-            />
-            <span style={{ fontSize: '11px', fontWeight: 700, letterSpacing: '0.15em', textTransform: 'uppercase', color: '#ffafd6' }}>
-              AI-Powered Consultancy
-            </span>
+        <div style={{ position: 'relative', zIndex: 10 }}>
+          {/* Section label — bar + text */}
+          <motion.div className="flex items-center gap-2 mb-4" initial={{ opacity: 0, y: 10 }} animate={{ opacity: 1, y: 0 }} transition={{ delay: 0.1 }}>
+            <div style={{ width: '3px', height: '12px', background: '#ffafd6', boxShadow: '0 0 8px rgba(255,175,214,0.6)', borderRadius: '2px', flexShrink: 0 }} />
+            <span style={{ fontSize: '11px', fontWeight: 700, letterSpacing: '0.14em', textTransform: 'uppercase', color: 'rgba(255,175,214,0.9)' }}>AI-Powered Consultancy</span>
           </motion.div>
 
           <BlurText
-            text="We Build Intelligent Systems That Drive Real Results"
-            className="text-4xl font-headline font-black text-white leading-tight"
-            delay={80}
+            text="We Engineer Precision AI Systems That Scale"
+            className="text-4xl font-headline font-black text-white"
+            delay={75}
             as="h1"
           />
-          <motion.p
-            className="text-sm leading-relaxed mt-3 readable"
-            style={{ color: 'rgba(214,193,201,0.75)' }}
-            initial={{ opacity: 0 }}
-            animate={{ opacity: 1 }}
-            transition={{ delay: 0.8 }}
-          >
-            From AI automation to enterprise web platforms — we engineer precision-built digital solutions that give businesses a measurable competitive edge.
+
+          {/* Hero stat row */}
+          <motion.div className="flex items-center gap-3 mt-3" initial={{ opacity: 0 }} animate={{ opacity: 1 }} transition={{ delay: 0.5 }}>
+            <span style={{ fontSize: '11px', fontWeight: 600, color: '#f0f0f0' }}>50+ Projects</span>
+            <div style={{ width: '1px', height: '14px', background: 'rgba(255,175,214,0.15)' }} />
+            <span style={{ fontSize: '11px', fontWeight: 600, color: '#f0f0f0' }}>20+ Industries</span>
+            <div style={{ width: '1px', height: '14px', background: 'rgba(255,175,214,0.15)' }} />
+            <span style={{ fontSize: '11px', fontWeight: 600, color: '#f0f0f0' }}>95% Retention</span>
+          </motion.div>
+
+          <motion.p style={{ fontSize: '14px', lineHeight: 1.65, color: 'rgba(214,193,201,0.7)', marginTop: '12px', maxWidth: '320px' }}
+            initial={{ opacity: 0 }} animate={{ opacity: 1 }} transition={{ delay: 0.7 }}>
+            From AI automation to enterprise web platforms — precision-built digital solutions that give your business a measurable edge.
           </motion.p>
 
-          {/* Trust Pills */}
-          <motion.div
-            className="flex flex-wrap gap-2 mt-5"
-            variants={staggerContainerVariants}
-            initial="hidden"
-            animate="visible"
-          >
+          {/* CTA Buttons */}
+          <motion.div className="flex gap-3 mt-5" initial={{ opacity: 0, y: 10 }} animate={{ opacity: 1, y: 0 }} transition={{ delay: 0.9 }}>
+            <div style={{ flex: 1, borderRadius: '14px', padding: '1px', background: 'linear-gradient(135deg, rgba(255,175,214,0.6), rgba(227,140,184,0.3))' }}>
+              <motion.button id="home-cta-primary" onClick={openWhatsApp}
+                style={{ width: '100%', height: '52px', borderRadius: '13px', background: 'linear-gradient(135deg, #ffafd6, #e38cb8)', color: '#57173e', fontWeight: 700, fontSize: '13px', border: 'none', cursor: 'pointer' }}
+                whileTap={{ scale: 0.97 }}
+                className="btn-primary-glow"
+              >Get Free Strategy Call</motion.button>
+            </div>
+            <motion.button id="home-cta-secondary"
+              onClick={() => { const el = document.getElementById('cases-section'); el?.scrollIntoView({ behavior: 'smooth' }); }}
+              style={{ flex: 1, height: '52px', borderRadius: '13px', background: 'transparent', border: '1px solid rgba(255,175,214,0.2)', color: 'rgba(214,193,201,0.8)', fontWeight: 600, fontSize: '13px', cursor: 'pointer' }}
+              whileTap={{ scale: 0.97 }}
+            >View Our Work</motion.button>
+          </motion.div>
+
+          {/* Trust Pills — horizontal scroll */}
+          <motion.div className="flex gap-2 mt-4 overflow-x-auto no-scrollbar" style={{ paddingBottom: '4px' }}
+            initial={{ opacity: 0 }} animate={{ opacity: 1 }} transition={{ delay: 1.1 }}>
             {[
-              { icon: <BrainIcon size={14} />, label: 'AI Automation' },
-              { icon: <GlobeIcon size={14} />, label: 'Custom Websites' },
-              { icon: <ChartIcon size={14} />, label: 'Market Intelligence' },
-              { icon: <MegaphoneIcon size={14} />, label: 'Performance Marketing' },
-              { icon: <TargetIcon size={14} />, label: 'Consulting' },
-            ].map((pill, i) => (
-              <motion.div key={pill.label} variants={staggerItemVariants}>
-                <TrustPill icon={pill.icon} label={pill.label} index={i} />
-              </motion.div>
+              { icon: <BrainIcon size={12} />, label: 'AI Automation' },
+              { icon: <GlobeIcon size={12} />, label: 'Custom Websites' },
+              { icon: <ChartIcon size={12} />, label: 'Market Intelligence' },
+              { icon: <MegaphoneIcon size={12} />, label: 'Performance Marketing' },
+              { icon: <TargetIcon size={12} />, label: 'Consulting' },
+            ].map((pill) => (
+              <TrustPill key={pill.label} icon={pill.icon} label={pill.label} index={0} />
             ))}
           </motion.div>
         </div>
       </section>
 
-      {/* STATS */}
-      <section className="px-5 py-10">
-        <motion.div
-          className="grid grid-cols-2 gap-3"
-          variants={staggerContainerVariants}
-          initial="hidden"
-          whileInView="visible"
-          viewport={{ once: true, margin: '-30px' }}
-        >
-          <motion.div variants={staggerItemVariants}>
-            <StatCounter target={50} suffix="+" label="Projects Delivered" icon={<RocketIcon size={18} />} color="#ffafd6" />
-          </motion.div>
-          <motion.div variants={staggerItemVariants}>
-            <StatCounter target={20} suffix="+" label="Industries Served" icon={<BuildingIcon size={18} />} color="#becc9a" />
-          </motion.div>
-          <motion.div variants={staggerItemVariants}>
-            <StatCounter target={95} suffix="%" label="Client Retention" icon={<HeartIcon size={18} />} color="#e38cb8" />
-          </motion.div>
-          <motion.div variants={staggerItemVariants}>
-            <GlassCard className="p-4 flex flex-col gap-2" style={{ position: 'relative', overflow: 'hidden' }}>
-              <div style={{ position: 'absolute', top: 0, left: 0, right: 0, height: '2px', background: '#becc9a', borderRadius: '20px 20px 0 0', opacity: 0.6 }} />
-              <div className="w-10 h-10 rounded-xl flex items-center justify-center" style={{ background: 'rgba(190,204,154,0.15)', border: '1px solid rgba(190,204,154,0.3)' }}>
-                <span style={{ fontSize: '20px', color: '#becc9a', display: 'flex' }}>
-                  <svg width="18" height="18" viewBox="0 0 24 24" fill="none" stroke="#becc9a" strokeWidth="1.5" strokeLinecap="round" strokeLinejoin="round">
-                    <circle cx="12" cy="12" r="10" /><polyline points="12,6 12,12 16,14" />
-                  </svg>
-                </span>
+      {/* ── STATS — horizontal scroll row ── */}
+      <section style={{ paddingTop: '48px', paddingBottom: '8px' }}>
+        <div style={{ paddingLeft: '20px', paddingRight: '20px', marginBottom: '16px' }}>
+          <div className="section-label-bar"><span className="section-label">Our Impact</span></div>
+          <h2 style={{ fontSize: '24px', fontFamily: '"Space Grotesk", sans-serif', fontWeight: 700, color: '#f0f0f0', margin: 0, letterSpacing: '-0.035em' }}>Numbers That Matter</h2>
+        </div>
+        <div className="flex gap-3 overflow-x-auto no-scrollbar" style={{ paddingLeft: '20px', paddingRight: '20px', paddingBottom: '8px' }}>
+          {STATS.map((stat, i) => (
+            <motion.div key={stat.label}
+              initial={{ opacity: 0, y: 20 }} whileInView={{ opacity: 1, y: 0 }}
+              viewport={{ once: true, margin: '-20px' }}
+              transition={{ duration: 0.4, delay: i * 0.08 }}
+              style={{ width: '130px', flexShrink: 0 }}
+            >
+              <div style={{ background: 'rgba(28,28,28,0.7)', backdropFilter: 'blur(20px)', border: '0.5px solid rgba(255,175,214,0.1)', borderRadius: '16px', padding: '16px', position: 'relative', overflow: 'hidden' }}>
+                <div style={{ width: '32px', height: '32px', borderRadius: '10px', background: `${stat.color}18`, border: `0.5px solid ${stat.color}40`, display: 'flex', alignItems: 'center', justifyContent: 'center', color: stat.color, marginBottom: '10px' }}>
+                  {stat.icon}
+                </div>
+                <StatCounter target={stat.target} suffix={stat.suffix} label={stat.label} icon={stat.icon} color={stat.color} />
+                {/* Bottom accent bar */}
+                <div style={{ position: 'absolute', bottom: 0, left: 0, right: 0, height: '2px', background: stat.color, opacity: 0.4, borderRadius: '0 0 16px 16px' }} />
               </div>
-              <div className="text-3xl font-headline font-black stat-value" style={{ color: '#becc9a', lineHeight: 1 }}>&lt;2wk</div>
-              <div className="text-xs font-semibold uppercase tracking-widest" style={{ color: 'rgba(214,193,201,0.6)' }}>Avg. Deployment</div>
-            </GlassCard>
+            </motion.div>
+          ))}
+          {/* <2wk card */}
+          <motion.div initial={{ opacity: 0, y: 20 }} whileInView={{ opacity: 1, y: 0 }} viewport={{ once: true, margin: '-20px' }} transition={{ duration: 0.4, delay: 0.24 }} style={{ width: '130px', flexShrink: 0 }}>
+            <div style={{ background: 'rgba(28,28,28,0.7)', backdropFilter: 'blur(20px)', border: '0.5px solid rgba(255,175,214,0.1)', borderRadius: '16px', padding: '16px', position: 'relative', overflow: 'hidden' }}>
+              <div style={{ width: '32px', height: '32px', borderRadius: '10px', background: 'rgba(190,204,154,0.12)', border: '0.5px solid rgba(190,204,154,0.3)', display: 'flex', alignItems: 'center', justifyContent: 'center', color: '#becc9a', marginBottom: '10px' }}>
+                <ClockIcon size={16} color="#becc9a" />
+              </div>
+              <div style={{ fontSize: '28px', fontFamily: '"Space Grotesk", sans-serif', fontWeight: 900, color: '#becc9a', lineHeight: 1 }}>&lt;2wk</div>
+              <div style={{ fontSize: '10px', fontWeight: 600, textTransform: 'uppercase', letterSpacing: '0.1em', color: 'rgba(214,193,201,0.5)', marginTop: '4px' }}>Avg Deployment</div>
+              <div style={{ position: 'absolute', bottom: 0, left: 0, right: 0, height: '2px', background: '#becc9a', opacity: 0.4, borderRadius: '0 0 16px 16px' }} />
+            </div>
           </motion.div>
-        </motion.div>
+        </div>
       </section>
 
-      {/* CASE STUDIES */}
-      <section className="py-8">
-        <div className="px-5 mb-4">
-          <span className="section-label">Case Studies</span>
-          <h2 className="text-2xl font-headline font-bold text-white mt-2">Real Work. Real Results.</h2>
+      {/* ── CASE STUDIES ── */}
+      <section id="cases-section" style={{ paddingTop: '48px', paddingBottom: '8px' }}>
+        <div style={{ paddingLeft: '20px', paddingRight: '20px', marginBottom: '16px' }}>
+          <div className="section-label-bar"><span className="section-label">Case Studies</span></div>
+          <h2 style={{ fontSize: '24px', fontFamily: '"Space Grotesk", sans-serif', fontWeight: 700, color: '#f0f0f0', margin: 0, letterSpacing: '-0.035em' }}>Real Work. Real Results.</h2>
         </div>
-        <div
-          ref={carouselRef}
-          onScroll={handleCarouselScroll}
-          className="flex gap-4 overflow-x-auto px-5 pb-2"
-          style={{ scrollSnapType: 'x mandatory', scrollbarWidth: 'none', msOverflowStyle: 'none' }}
+        <div ref={carouselRef} onScroll={handleCarouselScroll}
+          className="flex gap-4 overflow-x-auto no-scrollbar"
+          style={{ scrollSnapType: 'x mandatory', paddingLeft: '20px', paddingRight: '20px', paddingBottom: '8px' }}
         >
           {CASE_STUDIES.map((cs, i) => (
-            <div key={cs.company} style={{ scrollSnapAlign: 'start', flexShrink: 0, width: 'calc(85vw)' }}>
-              <CaseStudyCard
-                {...cs}
-                onClick={() => setSelectedCase(cs)}
-              />
+            <div key={cs.company} style={{ scrollSnapAlign: 'start', flexShrink: 0, width: 'calc(88vw)', maxWidth: '340px' }}>
+              {/* Gradient border wrapper */}
+              <div style={{ padding: '1px', borderRadius: '21px', background: 'linear-gradient(135deg, rgba(255,175,214,0.15), rgba(255,175,214,0.03))' }}>
+                <CaseStudyCard {...cs} onClick={() => setSelectedCase(cs)} index={i} />
+              </div>
             </div>
           ))}
         </div>
-        {/* Scroll dots */}
         <div className="flex justify-center gap-2 mt-4">
           {CASE_STUDIES.map((_, i) => (
-            <motion.div
-              key={i}
-              animate={{
-                width: activeDot === i ? '12px' : '6px',
-                background: activeDot === i ? '#ffffff' : 'rgba(214,193,201,0.3)',
-              }}
+            <motion.div key={i}
+              animate={{ width: activeDot === i ? '12px' : '6px', background: activeDot === i ? '#ffffff' : 'rgba(214,193,201,0.3)' }}
               transition={{ type: 'spring', stiffness: 300, damping: 25 }}
               style={{ height: '6px', borderRadius: '99px' }}
             />
@@ -252,57 +252,55 @@ const HomeScreen: React.FC = () => {
         </div>
       </section>
 
-      {/* METHODOLOGY */}
-      <section className="px-5 py-10">
-        <div className="mb-8">
-          <span className="section-label">Our Process</span>
-          <BlurText text="How We Work" className="text-2xl font-headline font-bold text-white mt-2" delay={60} />
+      {/* ── METHODOLOGY ── */}
+      <section style={{ padding: '48px 20px 0' }}>
+        <div style={{ marginBottom: '32px' }}>
+          <div className="section-label-bar"><span className="section-label">Our Process</span></div>
+          <BlurText text="From Discovery to Scale" className="text-2xl font-headline font-bold text-white mt-2" delay={60} />
         </div>
-        <div className="flex flex-col">
+        <motion.div className="flex flex-col" variants={staggerContainerVariants} initial="hidden" whileInView="visible" viewport={{ once: true }}>
           {METHODOLOGY.map((step, i) => (
-            <div key={step.step} className="relative">
-              <MethodologyStep
-                icon={step.icon}
-                number={step.step}
-                color={step.color}
-                title={step.title}
-                description={step.description}
-                isLast={i === METHODOLOGY.length - 1}
-              />
-            </div>
+            <MethodologyStep
+              key={step.step}
+              icon={step.icon}
+              number={step.step}
+              color={step.color}
+              title={step.title}
+              description={step.description}
+              isLast={i === METHODOLOGY.length - 1}
+              index={i}
+            />
           ))}
-        </div>
+        </motion.div>
       </section>
 
-      {/* CTA */}
-      <section className="px-5 pb-6">
-        <GlassCard className="p-6 text-center relative overflow-hidden" variant="elevated">
-          <div className="gradient-blob" style={{ width: '200px', height: '200px', background: 'rgba(255,175,214,0.12)', top: '-50px', left: '50%', transform: 'translateX(-50%)' }} />
-          <div className="relative z-10">
-            {/* Animated sparkle instead of emoji */}
-            <motion.div
-              className="flex justify-center mb-3"
-              animate={{ rotate: [0, 15, -15, 0], scale: [1, 1.1, 1] }}
-              transition={{ duration: 4, repeat: Infinity, ease: 'easeInOut' }}
-            >
-              <SparkleIcon size={36} color="#ffafd6" />
-            </motion.div>
-            <h2 className="text-2xl font-headline font-black text-white mb-2">Ready to Build Something Intelligent?</h2>
-            <p className="text-sm mb-6" style={{ color: 'rgba(214,193,201,0.7)' }}>
-              Tell us about your business challenges. We'll craft a strategy tailored to your goals — from AI automation to full-scale digital transformation.
-            </p>
-            <div style={{ borderRadius: '16px', padding: '1px', background: 'linear-gradient(135deg, rgba(255,175,214,0.6), rgba(227,140,184,0.3))', display: 'block', width: '100%' }}>
-              <motion.button
-                id="home-book-consult"
-                onClick={openWhatsApp}
-                className="w-full py-4 rounded-[14px] font-bold text-sm btn-primary-glow"
-                style={{ background: 'linear-gradient(135deg, #ffafd6, #e38cb8)', color: '#57173e', borderRadius: '14px' }}
-                whileTap={{ scale: 0.97 }}
-              >
-                Book Free Consultancy Call
-              </motion.button>
+      {/* ── CTA ── */}
+      <section style={{ padding: '48px 20px 24px' }}>
+        <GlassCard className="p-6 text-center relative overflow-hidden glass-card-elevated">
+          <div style={{ position: 'relative', zIndex: 10 }}>
+            {/* SparkleIcon in circle */}
+            <div style={{ width: '56px', height: '56px', borderRadius: '50%', background: 'linear-gradient(135deg, rgba(255,175,214,0.15), rgba(227,140,184,0.1))', border: '1px solid rgba(255,175,214,0.2)', display: 'flex', alignItems: 'center', justifyContent: 'center', margin: '0 auto 16px' }}>
+              <motion.div animate={{ rotate: [0, 15, -15, 0], scale: [1, 1.1, 1] }} transition={{ duration: 4, repeat: Infinity, ease: 'easeInOut' }}>
+                <SparkleIcon size={28} color="#ffafd6" />
+              </motion.div>
             </div>
-            <p className="text-xs mt-3" style={{ color: 'rgba(214,193,201,0.4)' }}>No commitment. 30-minute call.</p>
+            <h2 style={{ fontSize: '22px', fontFamily: '"Space Grotesk", sans-serif', fontWeight: 900, color: '#fff', marginBottom: '8px', letterSpacing: '-0.03em' }}>Ready to Build Something Intelligent?</h2>
+            <p style={{ fontSize: '13px', color: 'rgba(214,193,201,0.7)', marginBottom: '20px', lineHeight: 1.65 }}>Tell us about your challenges. We craft precision strategies tied to your goals.</p>
+            <div style={{ borderRadius: '16px', padding: '1px', background: 'linear-gradient(135deg, rgba(255,175,214,0.6), rgba(227,140,184,0.3))', display: 'block', width: '100%', marginBottom: '12px' }}>
+              <motion.button id="home-book-consult" onClick={openWhatsApp}
+                style={{ width: '100%', height: '52px', borderRadius: '14px', background: 'linear-gradient(135deg, #ffafd6, #e38cb8)', color: '#57173e', fontWeight: 700, fontSize: '14px', border: 'none', cursor: 'pointer' }}
+                whileTap={{ scale: 0.97 }} className="btn-primary-glow"
+              >Book Free Consultancy Call</motion.button>
+            </div>
+            {/* Trust items row */}
+            <div className="flex items-center justify-center gap-2">
+              <CheckCircleIcon size={12} color="#becc9a" />
+              <span style={{ fontSize: '11px', color: 'rgba(214,193,201,0.5)' }}>No commitment</span>
+              <div style={{ width: '3px', height: '3px', borderRadius: '50%', background: 'rgba(214,193,201,0.3)' }} />
+              <span style={{ fontSize: '11px', color: 'rgba(214,193,201,0.5)' }}>30-min call</span>
+              <div style={{ width: '3px', height: '3px', borderRadius: '50%', background: 'rgba(214,193,201,0.3)' }} />
+              <span style={{ fontSize: '11px', color: 'rgba(214,193,201,0.5)' }}>Reply in 24h</span>
+            </div>
           </div>
         </GlassCard>
       </section>
@@ -310,37 +308,41 @@ const HomeScreen: React.FC = () => {
       <WhatsAppFAB />
 
       {/* Case Study Bottom Sheet */}
-      <BottomSheet
-        isOpen={!!selectedCase}
-        onClose={() => setSelectedCase(null)}
-        title={selectedCase?.company}
-        subtitle={selectedCase?.category}
-      >
+      <BottomSheet isOpen={!!selectedCase} onClose={() => setSelectedCase(null)} title={selectedCase?.company} subtitle={selectedCase?.category}>
         {selectedCase && (
           <div className="flex flex-col gap-5">
             <div className="flex gap-3">
               {selectedCase.stats.map((stat) => (
                 <GlassCard key={stat.label} className="flex-1 p-4 text-center">
-                  <div className="text-2xl font-headline font-black text-gradient">{stat.value}</div>
+                  <div className="text-2xl font-headline font-black text-gradient-static stat-highlight">{stat.value}</div>
                   <div className="text-xs mt-1" style={{ color: 'rgba(214,193,201,0.6)' }}>{stat.label}</div>
                 </GlassCard>
               ))}
             </div>
-            <div>
+            <div style={{ borderLeft: '2px solid rgba(255,175,214,0.4)', paddingLeft: '12px' }}>
               <p className="text-xs font-semibold uppercase tracking-widest mb-2" style={{ color: '#ffafd6' }}>Challenge</p>
               <p className="text-sm leading-relaxed" style={{ color: 'rgba(214,193,201,0.8)' }}>{selectedCase.challenge}</p>
             </div>
-            <div>
+            <div style={{ borderLeft: '2px solid rgba(190,204,154,0.4)', paddingLeft: '12px' }}>
               <p className="text-xs font-semibold uppercase tracking-widest mb-2" style={{ color: '#becc9a' }}>Impact</p>
               <p className="text-sm leading-relaxed" style={{ color: 'rgba(214,193,201,0.8)' }}>{selectedCase.impact}</p>
             </div>
             <div className="flex flex-wrap gap-2">
               {selectedCase.tags.map((tag) => (
-                <span key={tag} className="px-3 py-1 rounded-full text-xs font-semibold" style={{ background: 'rgba(255,175,214,0.08)', border: '0.5px solid rgba(255,175,214,0.2)', color: 'rgba(214,193,201,0.7)' }}>
-                  {tag}
-                </span>
+                <span key={tag} className="px-3 py-1 rounded-full text-xs font-semibold" style={{ background: 'rgba(255,175,214,0.08)', border: '0.5px solid rgba(255,175,214,0.2)', color: 'rgba(214,193,201,0.7)' }}>{tag}</span>
               ))}
             </div>
+            <motion.button
+              onClick={async () => {
+                const cs = selectedCase;
+                if (!cs) return;
+                const url = `https://api.whatsapp.com/send/?phone=919811797407&text=${encodeURIComponent(`Hi Tech@Work! I saw the ${cs.company} case study on your app and would like to discuss something similar for my business.`)}&type=phone_number&app_absent=0`;
+                await openUrl(url);
+                setSelectedCase(null);
+              }}
+              style={{ width: '100%', height: '52px', borderRadius: '14px', background: 'linear-gradient(135deg, #ffafd6, #e38cb8)', color: '#57173e', fontWeight: 700, fontSize: '14px', border: 'none', cursor: 'pointer' }}
+              whileTap={{ scale: 0.97 }}
+            >Build Something Similar</motion.button>
           </div>
         )}
       </BottomSheet>

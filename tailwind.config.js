@@ -24,7 +24,7 @@ export default {
         body: ['Inter', 'sans-serif'],
       },
       animation: {
-        'marquee': 'marquee 20s linear infinite',
+        'marquee': 'marquee-forward 20s linear infinite',
         'marquee-reverse': 'marquee-reverse 20s linear infinite',
         'pulse-glow': 'pulse-glow 2s ease-in-out infinite',
         'fade-in': 'fade-in 0.6s ease forwards',
@@ -32,11 +32,12 @@ export default {
         'count-up': 'count-up 2s ease-out forwards',
         'spin-slow': 'spin 8s linear infinite',
       },
+      screens: {
+        xs: '360px',
+        sm: '390px',
+        md: '428px',
+      },
       keyframes: {
-        'marquee': {
-          '0%': { transform: 'translateX(0%)' },
-          '100%': { transform: 'translateX(-50%)' },
-        },
         'marquee-reverse': {
           '0%': { transform: 'translateX(-50%)' },
           '100%': { transform: 'translateX(0%)' },

@@ -36,12 +36,18 @@ const TEAM = [
 
 const EXPERTISE = ['AI Engineering', 'Data Science', 'Web Architecture', 'Performance Marketing', 'Business Strategy', 'LLM Deployment', 'Cloud Infrastructure', 'Product Design'];
 
+let _Browser: typeof import('@capacitor/browser').Browser | null = null;
+async function openUrl(url: string) {
+  if (!_Browser) {
+    try { _Browser = (await import('@capacitor/browser')).Browser; } catch {}
+  }
+  if (_Browser) await _Browser.open({ url });
+  else window.open(url, '_blank');
+}
+
 const openWhatsApp = async () => {
   const url = `https://api.whatsapp.com/send/?phone=919811797407&text=${encodeURIComponent('Hi Tech@Work! I\'d like to book a free consultancy call.')}&type=phone_number&app_absent=0`;
-  try {
-    const { Browser } = await import('@capacitor/browser');
-    await Browser.open({ url });
-  } catch { window.open(url, '_blank'); }
+  await openUrl(url);
 };
 
 const AboutScreen: React.FC = () => {
