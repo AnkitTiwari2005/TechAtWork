@@ -44,25 +44,22 @@ const SplashScreen: React.FC = () => {
         animate={{ opacity: 1, y: 0 }}
         transition={{ duration: 0.8, ease: [0.16, 1, 0.3, 1] }}
       >
-        {/* Logo mark */}
+        {/* Logo mark — real logo */}
         <motion.div
           className="animate-pulse-glow"
           style={{
-            width: '80px',
-            height: '80px',
-            borderRadius: '24px',
-            background: 'linear-gradient(135deg, #ffafd6, #e38cb8)',
-            display: 'flex',
-            alignItems: 'center',
-            justifyContent: 'center',
-            fontSize: '2.5rem',
-            fontFamily: '"Space Grotesk", sans-serif',
-            fontWeight: 900,
-            color: '#57173e',
+            width: '100px',
+            height: '100px',
+            borderRadius: '28px',
+            overflow: 'hidden',
             boxShadow: '0 0 40px rgba(255,175,214,0.4), 0 0 80px rgba(255,175,214,0.2)',
           }}
         >
-          @
+          <img
+            src="/assets/logo.png"
+            alt="Tech@Work"
+            style={{ width: '100%', height: '100%', objectFit: 'cover' }}
+          />
         </motion.div>
 
         {/* Wordmark */}
